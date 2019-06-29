@@ -18,8 +18,10 @@ import com.jsware.fizz.constants.FizzConstants.Error_Messages;
 import com.jsware.fizz.constants.FizzConstants.Logger_State;
 import com.jsware.fizz.exceptions.FizzException;
 import com.jsware.fizz.model.Member;
+import com.jsware.fizz.model.Preference;
 import com.jsware.fizz.model.Receipt;
 import com.jsware.fizz.repository.MemberRepository;
+import com.jsware.fizz.repository.PreferenceRepository;
 
 
 
@@ -31,11 +33,13 @@ import com.jsware.fizz.repository.MemberRepository;
 public class MemberContoller {
 	
 	private MemberRepository memRepo;
+	private PreferenceRepository prefRepo;
 	
 	@Autowired
-	public MemberContoller(MemberRepository memRepo)
+	public MemberContoller(MemberRepository memRepo, PreferenceRepository prefRepo)
 	{
 		this.memRepo=memRepo;
+		this.prefRepo=prefRepo;
 	}
 	
 	@RequestMapping(value="/createMember",method=RequestMethod.POST)
@@ -47,6 +51,11 @@ public class MemberContoller {
 			if(!memRepo.existsById(member.getUsername()))
 			{
 				memRepo.save(member);
+				for(Preference preference:member.getPreferences())
+				{
+					preference.setOwner(member);
+					prefRepo.save(preference);
+				}
 			}
 			else 
 			{

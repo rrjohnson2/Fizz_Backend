@@ -1,0 +1,37 @@
+//	@Test
+//	public void shareTraining() throws Exception
+//	{
+//		Ticket_ShareTraining ticket = new Ticket_ShareTraining();
+//		
+//		ticket.setaNumber(test_amy);
+//		ticket.setReciever(TestConstants.test_emp);
+//		ticket.setTrainingId(trainingId);
+//		
+//		String ticket_json = mapper.writeValueAsString(ticket);
+//		
+//		this.mockMvc.perform(
+//				post("/shareTraining")
+//				.contentType(MediaType.APPLICATION_JSON)
+//				.content(ticket_json))
+//		.andDo(print())
+//		.andExpect(status().isOk())
+//		.andExpect(content().string(
+//				containsString(AppWideConstants.Success_Messages.SHARED_TRAINING.toString())));
+//		
+//		
+//		 // view results 
+//		ResultActions resultActions = this.mockMvc.perform(
+//				get("/getProfile")
+//				.param("aNumber", TestConstants.test_emp.getaNumber()));
+//		
+//		resultActions
+//			.andDo(print())
+//			.andExpect(status().isOk());
+//		
+//		MvcResult result = resultActions.andReturn();
+//		Profile profile = mapper.readValue(result.getResponse().getContentAsString(), Profile.class);
+//		
+//		SharedTraining shared = new SharedTraining();
+//		shared.setSharedId(id);
+//		
+//		assertTrue(profile.getSharedTrainings().contains(shared));

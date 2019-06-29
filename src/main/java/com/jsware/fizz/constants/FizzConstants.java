@@ -3,9 +3,17 @@ package com.jsware.fizz.constants;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Entity;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class FizzConstants {
@@ -18,6 +26,25 @@ public class FizzConstants {
 	{
 		ERROR,
 		INFO
+	}
+	
+	public static enum Category{
+		
+		TECHNOLOGY("TECHNOLOGY"),
+		MOVIES("MOVIES");
+		
+		private String name;
+		
+		private Category(String name)
+		{
+			this.name=name;
+		}
+		
+		public String getName()
+		{
+			return this.name;
+		}
+		
 	}
 
 	
@@ -73,6 +100,20 @@ public class FizzConstants {
 			break;
 		}
 		
+	}
+	
+	
+	@RequestMapping(value="/getCategories",method=RequestMethod.GET)
+	@ResponseBody
+	public List<String> getCategories()
+	{
+		List<String> categories=new ArrayList<String>();
+		
+		for(Category cat : Category.values())
+		{
+			categories.add(cat.getName());
+		}
+		return categories;
 	}
 
 }

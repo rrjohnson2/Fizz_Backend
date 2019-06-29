@@ -1,12 +1,20 @@
 package com.jsware.fizz.model;
 
+
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.Random;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Fetch;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,7 +35,88 @@ public class Member {
 	
 	private String saltyPassword;
 	
+	@OneToMany(mappedBy="creator")
+	@JsonIgnore
+	private List<Idea> created_ideas = new ArrayList<Idea>();
 	
+	
+	@OneToMany(mappedBy="creator")
+	@JsonIgnore
+	private List<Retort> created_retorts = new ArrayList<Retort>();
+	
+	@OneToMany(mappedBy="owner")
+	private List<Preference> preferences = new ArrayList<Preference>();
+	
+
+
+	@OneToMany(mappedBy="creator")
+	@JsonIgnore
+	private List<Message> created_messages = new ArrayList<Message>();
+	
+	
+	
+	
+	public Member(String username, String firstName, String lastName, String email, List<Preference> preferences) {
+		super();
+		this.username = username;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.preferences = preferences;
+	}
+
+	public Member() {};
+
+	public List<Retort> getCreated_retorts() {
+		return created_retorts;
+	}
+
+
+	public void setCreated_retorts(List<Retort> created_retorts) {
+		this.created_retorts = created_retorts;
+	}
+
+
+	public List<Preference> getPreferences() {
+		return preferences;
+	}
+
+
+	public void setPreferences(List<Preference> preferences) {
+		this.preferences = preferences;
+	}
+
+
+	public List<Message> getCreated_messages() {
+		return created_messages;
+	}
+
+
+	public void setCreated_messages(List<Message> created_messages) {
+		this.created_messages = created_messages;
+	}
+
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
+
+	public void setSaltyPassword(String saltyPassword) {
+		this.saltyPassword = saltyPassword;
+	}
+	
+	
+	public List<Idea> getCreated_ideas() {
+		return created_ideas;
+	}
+
+
+	public void setCreated_ideas(List<Idea> created_ideas) {
+		this.created_ideas = created_ideas;
+	}
+
+
 	@JsonIgnore
 	public String getSalt() {
 		return salt;
@@ -158,6 +247,8 @@ public class Member {
 			_count++;
 		}
 	}
+
+
 
 	
 	
