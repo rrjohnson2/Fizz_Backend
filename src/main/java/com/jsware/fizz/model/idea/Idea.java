@@ -1,6 +1,7 @@
-package com.jsware.fizz.model;
+package com.jsware.fizz.model.idea;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.jsware.fizz.model.member.Member;
+import com.jsware.fizz.model.retort.Retort;
+
 @Entity
 @SequenceGenerator(name="idea_seq", initialValue=1)
 public class Idea {
@@ -26,19 +30,27 @@ public class Idea {
 	@JoinColumn(name="creator")
 	private Member creator;
 	
-	private Date timestamp;
+	private Date timestamp = new Date();
 	
-	@OneToOne()
-	private Focus focus;
+	@OneToMany(mappedBy="idea")
+	private List<Focus> focus = new ArrayList<Focus>();
 	
 	private String title, description;
 	
 	@OneToMany(mappedBy="idea")
-	private List<Retort> resorts;
+	private List<Retort> resorts =  new ArrayList<Retort>();
 	
 	@OneToOne(mappedBy="idea")
-	private Rating rating = new Rating(0.0,0,0);
+	private Rating rating;
 	
+	public Idea() {}
+	
+	public Idea(String title, String description) {
+		super();
+		this.title = title;
+		this.description = description;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -62,11 +74,11 @@ public class Idea {
 	}
 	
 
-	public Focus getFocus() {
+	public List<Focus> getFocus() {
 		return focus;
 	}
 
-	public void setFocus(Focus focus) {
+	public void setFocus(List<Focus> focus) {
 		this.focus = focus;
 	}
 

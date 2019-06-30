@@ -2,8 +2,8 @@ package com.jsware.fizz.testconstants;
 
 import java.util.List;
 
-import com.jsware.fizz.model.Member;
-import com.jsware.fizz.model.Preference;
+import com.jsware.fizz.model.member.Member;
+import com.jsware.fizz.model.member.Preference;
 
 public class MemberJson {
 	

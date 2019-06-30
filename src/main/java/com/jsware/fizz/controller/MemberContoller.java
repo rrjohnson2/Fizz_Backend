@@ -17,10 +17,10 @@ import com.jsware.fizz.constants.FizzConstants;
 import com.jsware.fizz.constants.FizzConstants.Error_Messages;
 import com.jsware.fizz.constants.FizzConstants.Logger_State;
 import com.jsware.fizz.exceptions.FizzException;
-import com.jsware.fizz.model.Member;
-import com.jsware.fizz.model.Preference;
-import com.jsware.fizz.model.Profile;
-import com.jsware.fizz.model.Receipt;
+import com.jsware.fizz.model.interactions.Receipt;
+import com.jsware.fizz.model.member.Member;
+import com.jsware.fizz.model.member.Preference;
+import com.jsware.fizz.model.member.Profile;
 import com.jsware.fizz.repository.MemberRepository;
 import com.jsware.fizz.repository.PreferenceRepository;
 

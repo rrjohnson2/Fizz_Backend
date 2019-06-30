@@ -1,4 +1,4 @@
-package com.jsware.fizz.model;
+package com.jsware.fizz.model.member;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

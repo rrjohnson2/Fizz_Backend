@@ -1,4 +1,4 @@
-package com.jsware.fizz.model;
+package com.jsware.fizz.model.idea;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @SequenceGenerator(name="rating_seq", initialValue=1)
@@ -21,14 +23,21 @@ public class Rating {
 	private int dislikes;
 	
 	@OneToOne()
+	@JsonIgnore
 	private Idea idea;
 	
 	
-	public Rating(double score, int likes, int dislikes) {
+	public Rating(Idea idea, double score, int likes, int dislikes) {
 		// TODO Auto-generated constructor stub
 		this.score=score;
 		this.likes=likes;
 		this.dislikes=dislikes;
+		this.idea=idea;
+	}
+
+
+	public Rating() {
+		// TODO Auto-generated constructor stub
 	}
 
 
@@ -103,6 +112,15 @@ public class Rating {
 
 	public void setIdea(Idea idea) {
 		this.idea = idea;
+	}
+
+
+	public void init(Idea idea) {
+		this.idea= idea;
+		this.score=0.0;
+		this.likes=0;
+		this.dislikes=0;
+		
 	}
 	
 	

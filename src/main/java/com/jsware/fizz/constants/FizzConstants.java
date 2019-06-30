@@ -31,7 +31,8 @@ public class FizzConstants {
 	public static enum Category{
 		
 		TECHNOLOGY("TECHNOLOGY"),
-		MOVIES("MOVIES");
+		MOVIES("MOVIES"),
+		MISC("MISSCELLANEOUS");
 		
 		private String name;
 		
@@ -46,13 +47,16 @@ public class FizzConstants {
 		}
 		
 	}
+	
+
 
 	
 	public static enum Receipt_Messages 
 	{
 		CREATED_MEMBER("MEMBER WAS SUCCESSFULLY ADDED"),
 		DELETED_MEMBER("MEMBER WAS SUCCESSFULLY DELETED"), 
-		PROFILE_OBTAINED("PROFILE RETURNED");
+		PROFILE_OBTAINED("PROFILE RETURNED"), 
+		CREATED_IDEA("IDEA SUCCESSFULLY CREATED");
 		
 		private String message;
 		
@@ -73,7 +77,8 @@ public class FizzConstants {
 		CREATED_MEMBER_X("CREATION FAILED"),
 		MEMEBER_EXIST_X("USERNAME ARLEADY TAKEN"),
 		DELETED_MEMBER_X("DELETE FAILED"),
-		PROFILE_X("PROFILE COULDNOT BE GATHERED");
+		PROFILE_X("PROFILE COULDNOT BE GATHERED"),
+		CREATED_IDEA_X("IDEA CREATION FAILED");
 		
 		private String message;
 		

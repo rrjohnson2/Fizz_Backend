@@ -6,8 +6,11 @@ import java.util.List;
 import org.assertj.core.util.Arrays;
 
 import com.jsware.fizz.constants.FizzConstants.Category;
-import com.jsware.fizz.model.Member;
-import com.jsware.fizz.model.Preference;
+import com.jsware.fizz.model.idea.Focus;
+import com.jsware.fizz.model.idea.Idea;
+import com.jsware.fizz.model.idea.Rating;
+import com.jsware.fizz.model.member.Member;
+import com.jsware.fizz.model.member.Preference;
 
 public class TestConstants {
 	
@@ -23,6 +26,10 @@ public class TestConstants {
 	public Member sam_bethe;
 	public MemberJson sam_bethe_json;
 	
+	public Focus sam_idea_focus = new  Focus(Category.MISC);
+	public Idea sam_idea= new Idea("Cats On Water", "cats need sufboards please dont be a bitch about it");
+	 
+	
 	public TestConstants() {
 		
 		SamBethe();
@@ -34,6 +41,8 @@ public class TestConstants {
 		sam_preferences.add(preference_B);
 		sam_bethe= new Member("samsquach","Sam", "Bethe", "sBethe@gmail", sam_preferences);
 		sam_bethe_json= new MemberJson(sam_bethe,sam_password);
+		sam_idea.setCreator(sam_bethe);
+		sam_idea.getFocus().add(sam_idea_focus);
 	}
 
 }

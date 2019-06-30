@@ -1,4 +1,4 @@
-package com.jsware.fizz.model;
+package com.jsware.fizz.model.member;
 
 
 import java.security.SecureRandom;
@@ -17,6 +17,9 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Fetch;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jsware.fizz.model.idea.Idea;
+import com.jsware.fizz.model.retort.Message;
+import com.jsware.fizz.model.retort.Retort;
 
 @Entity
 public class Member {

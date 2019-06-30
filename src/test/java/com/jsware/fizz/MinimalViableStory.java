@@ -34,9 +34,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsware.fizz.constants.FizzConstants;
-import com.jsware.fizz.model.Member;
-import com.jsware.fizz.model.Profile;
-import com.jsware.fizz.model.Receipt;
+import com.jsware.fizz.model.interactions.Receipt;
+import com.jsware.fizz.model.interactions.Ticket;
+import com.jsware.fizz.model.member.Member;
+import com.jsware.fizz.model.member.Profile;
 import com.jsware.fizz.testconstants.TestConstants;
 
 @RunWith(SpringRunner.class)
@@ -101,7 +102,29 @@ public class MinimalViableStory {
 				 			Member.class);
 		 Profile results = getSamProfile();
 			
-		assertTrue(!results.getPreferences().isEmpty());
+		 assertTrue(!results.getPreferences().isEmpty());
+	}
+	
+	@Test
+	public void createIdea() throws Exception
+	{
+		String idea = mapper.writeValueAsString(ts.sam_idea);
+		
+		ResultActions resaction = this.mockMvc.perform(
+				post("/createIdea")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(idea));
+		MvcResult results = resaction
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andReturn();
+		
+		Receipt receipt= mapper.readValue(
+				results.getResponse().
+					getContentAsString(),
+				Receipt.class);
+		
+		assertNotNull(receipt);
 	}
 
 	private Profile getSamProfile() throws JsonProcessingException, Exception, IOException, JsonParseException,

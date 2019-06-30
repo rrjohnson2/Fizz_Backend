@@ -1,4 +1,4 @@
-package com.jsware.fizz.model;
+package com.jsware.fizz.model.retort;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+
+import com.jsware.fizz.model.member.Member;
 
 @Entity
 @SequenceGenerator(name="msg_seq", initialValue=1)

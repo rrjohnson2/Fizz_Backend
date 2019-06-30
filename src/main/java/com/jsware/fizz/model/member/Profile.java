@@ -1,7 +1,11 @@
-package com.jsware.fizz.model;
+package com.jsware.fizz.model.member;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.jsware.fizz.model.idea.Idea;
+import com.jsware.fizz.model.retort.Message;
+import com.jsware.fizz.model.retort.Retort;
 
 public class Profile {
 	

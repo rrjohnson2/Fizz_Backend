@@ -1,4 +1,4 @@
-package com.jsware.fizz.model;
+package com.jsware.fizz.model.interactions;
 
 public class Receipt {
 	private String message;

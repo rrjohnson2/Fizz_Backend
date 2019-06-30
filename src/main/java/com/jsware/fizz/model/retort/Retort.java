@@ -1,4 +1,4 @@
-package com.jsware.fizz.model;
+package com.jsware.fizz.model.retort;
 
 import java.util.List;
 
@@ -11,6 +11,9 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+
+import com.jsware.fizz.model.idea.Idea;
+import com.jsware.fizz.model.member.Member;
 
 @Entity
 @SequenceGenerator(name="retort_seq", initialValue=1)
