@@ -21,6 +21,7 @@ public class TestConstants {
 	public List<Preference> sam_preferences = new ArrayList<Preference>();
 	public String sam_password = "sammyboy";
 	public Member sam_bethe;
+	public MemberJson sam_bethe_json;
 	
 	public TestConstants() {
 		
@@ -32,7 +33,7 @@ public class TestConstants {
 		sam_preferences.add(preference_A);
 		sam_preferences.add(preference_B);
 		sam_bethe= new Member("samsquach","Sam", "Bethe", "sBethe@gmail", sam_preferences);
-		sam_bethe.setPassword(sam_password);
+		sam_bethe_json= new MemberJson(sam_bethe,sam_password);
 	}
 
 }

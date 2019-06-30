@@ -19,6 +19,7 @@ import com.jsware.fizz.constants.FizzConstants.Logger_State;
 import com.jsware.fizz.exceptions.FizzException;
 import com.jsware.fizz.model.Member;
 import com.jsware.fizz.model.Preference;
+import com.jsware.fizz.model.Profile;
 import com.jsware.fizz.model.Receipt;
 import com.jsware.fizz.repository.MemberRepository;
 import com.jsware.fizz.repository.PreferenceRepository;
@@ -127,4 +128,32 @@ public class MemberContoller {
 			throw new FizzException(FizzConstants.Error_Messages.DELETED_MEMBER_X.getMessage());
 		}
 	}
+	
+	@RequestMapping(value="/getProfile",method=RequestMethod.POST)
+	@ResponseBody
+	public Receipt getProfile(@RequestBody Member member) throws FizzException
+	{
+		try
+		{
+			Profile profile = new Profile(
+					memRepo.findById(member.getUsername())
+						.get()
+						);
+			FizzConstants.log(
+					Logger_State.INFO, 
+					FizzConstants.Receipt_Messages.PROFILE_OBTAINED.getMessage(),
+					MemberContoller.class);
+			return new Receipt(
+					FizzConstants.Receipt_Messages.PROFILE_OBTAINED.getMessage(),
+					profile);
+		}
+		catch(Exception e)
+		{
+			FizzConstants.log(Logger_State.ERROR, e.getMessage(), MemberContoller.class);
+			throw new FizzException(FizzConstants.Error_Messages.PROFILE_X.getMessage());
+		}
+	}
+	  
+	
+	
 }

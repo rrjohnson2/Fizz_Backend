@@ -31,8 +31,10 @@ public class Member {
 	
 	private String email;
 	
+	@JsonIgnore
 	private String salt;
 	
+	@JsonIgnore
 	private String saltyPassword;
 	
 	@OneToMany(mappedBy="creator")
@@ -117,13 +119,13 @@ public class Member {
 	}
 
 
-	@JsonIgnore
+	
 	public String getSalt() {
 		return salt;
 	}
 
 
-	@JsonIgnore
+	
 	public String getSaltyPassword() {
 		return saltyPassword;
 	}
@@ -249,7 +251,10 @@ public class Member {
 	}
 
 
-
+	public boolean AccessGranted(String passowrd)
+	{
+		return saltyPassword.equals(salt+passowrd+salt);
+	}
 	
 	
 
