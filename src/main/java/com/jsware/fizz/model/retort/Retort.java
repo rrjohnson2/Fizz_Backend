@@ -42,10 +42,8 @@ public class Retort {
 		
 	}
 	
-	public Retort(Idea idea, Member creator, String content) {
+	public Retort(String content) {
 		super();
-		this.idea = idea;
-		this.creator = creator;
 		this.content = content;
 	}
 

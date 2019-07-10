@@ -2,6 +2,7 @@ package com.jsware.fizz.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,10 +24,12 @@ import com.jsware.fizz.model.idea.Rating;
 import com.jsware.fizz.model.interactions.Receipt;
 import com.jsware.fizz.model.interactions.Ticket;
 import com.jsware.fizz.model.member.Member;
+import com.jsware.fizz.model.retort.Retort;
 import com.jsware.fizz.repository.FocusRepository;
 import com.jsware.fizz.repository.IdeaRepository;
 import com.jsware.fizz.repository.MemberRepository;
 import com.jsware.fizz.repository.RatingRepository;
+import com.jsware.fizz.repository.RetortRepository;
 
 @Controller
 public class TicketController {
@@ -42,6 +45,9 @@ public class TicketController {
 	
 	@Autowired
 	private RatingRepository ratRepo;
+	
+	@Autowired
+	private RetortRepository retRepo;
 	
 	@Autowired
 	private ObjectMapper mapper;
@@ -102,6 +108,26 @@ public class TicketController {
 	{
 		
 		try {
+			Member creator = memRepo.findById(ticket.getCustomer()).get();
+			
+			HashMap<String, Object> data = mapper.readValue(
+					mapper.writeValueAsString(ticket.getData()),
+					HashMap.class);
+			
+			Idea idea = ideaRepo.findById(
+					Long.parseLong(
+							mapper.writeValueAsString(data.get("idea"))
+							))
+					.get();
+			
+			Retort retort = mapper.readValue(
+					mapper.writeValueAsString(data.get("retort")),
+					Retort.class);
+			
+			retort.setCreator(creator);
+			retort.setIdea(idea);
+			
+			retort = retRepo.save(retort);
 			
 			FizzConstants.log(
 					Logger_State.INFO, 
@@ -109,7 +135,7 @@ public class TicketController {
 					MemberContoller.class);
 			return new Receipt(
 					FizzConstants.Receipt_Messages.CREATED_RETORT.getMessage(),
-					null);
+					retort);
 			
 		} catch (Exception e) {
 			FizzConstants.log(Logger_State.ERROR, e.getMessage(), TicketController.class);

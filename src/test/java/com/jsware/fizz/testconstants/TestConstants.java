@@ -1,6 +1,7 @@
 package com.jsware.fizz.testconstants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.assertj.core.util.Arrays;
@@ -36,6 +37,8 @@ public class TestConstants {
 	public Idea sam_idea= new Idea("Cats On Water", "cats need sufboards please dont be a bitch about it");
 	public Retort david_retort;
 	public Ticket sam_idea_ticket=new Ticket();
+	public Ticket david_retort_ticket= new Ticket();
+	public HashMap<String,Object> david_retort_data= new HashMap<String, Object>();
 	 
 	
 	public TestConstants() {
@@ -46,7 +49,12 @@ public class TestConstants {
 	public void DavidReed() {
 		david_reed = new Member("davidboy","David","Reed","reed2@gmail.com",null);
 		david_reed_json = new MemberJson(david_reed, david_password);
-		david_retort= new Retort(sam_idea,david_reed,"this is such a great idea, get started");
+		david_retort= new Retort("this is such a great idea, get started");
+		david_retort_data.put("idea", sam_idea.getId());
+		david_retort_data.put("retort", david_retort);
+		david_retort_ticket.setCustomer(david_reed.getUsername());
+		david_retort_ticket.setData(david_retort_data);
+		
 	}
 
 	private void SamBethe() {

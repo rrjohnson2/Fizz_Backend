@@ -87,6 +87,7 @@ public class MinimalViableStory {
 	{
 		createSam();
 		createSamIdea();
+		retortDavid();
 	}
 	private void createSam() throws Exception {
 		
@@ -122,11 +123,10 @@ public class MinimalViableStory {
 		assertNotNull(receipt);
 	}
 	
-//	@Test
-	public void retortDavid() throws Exception
+	private void retortDavid() throws Exception
 	{
 		ts.DavidReed();
-		String retortJson = mapper.writeValueAsString(ts.david_retort);
+		String retortJson = mapper.writeValueAsString(ts.david_retort_ticket);
 		
 		ResultActions resaction = this.mockMvc.perform(
 				post("/retortIdea")
