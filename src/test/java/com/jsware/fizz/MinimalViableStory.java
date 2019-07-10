@@ -21,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.DisabledIf;
@@ -80,18 +81,23 @@ public class MinimalViableStory {
 	@After
 	public void tearDown() throws Exception {
 	}
-
+	
 	@Test
-	public void createSam() throws Exception {
+	public void minimalTest() throws Exception
+	{
+		createSam();
+		createSamIdea();
+	}
+	private void createSam() throws Exception {
 		
 		createMember(ts.sam_bethe_json);
 		Profile results = getProfile(ts.sam_bethe.getUsername());
 			
-		 assertTrue(!results.getPreferences().isEmpty());
+		assertTrue(!results.getPreferences().isEmpty());
 	}
 	
-	@Test
-	public void createSamIdea() throws Exception
+	
+	private void createSamIdea() throws Exception
 	{
 		String ticket_json = mapper.writeValueAsString(ts.sam_idea_ticket);
 		
