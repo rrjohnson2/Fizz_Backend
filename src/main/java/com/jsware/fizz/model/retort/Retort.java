@@ -1,5 +1,6 @@
 package com.jsware.fizz.model.retort;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -35,7 +36,18 @@ public class Retort {
 	private String content;
 	
 	@OneToMany(mappedBy="retort")
-	private List<Message> messages;
+	private List<Message> messages = new ArrayList<Message>();
+	
+	public Retort() {
+		
+	}
+	
+	public Retort(Idea idea, Member creator, String content) {
+		super();
+		this.idea = idea;
+		this.creator = creator;
+		this.content = content;
+	}
 
 	@Override
 	public int hashCode() {

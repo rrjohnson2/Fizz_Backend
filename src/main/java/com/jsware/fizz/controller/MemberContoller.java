@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jsware.fizz.constants.FizzConstants;
@@ -109,18 +110,18 @@ public class MemberContoller {
 
 	@RequestMapping(value="/deleteMember",method=RequestMethod.POST)
 	@ResponseBody
-	public Receipt deleteMember(@RequestBody Member member) throws FizzException
+	public Receipt deleteMember(@RequestParam String username) throws FizzException
 	{
 		try
 		{
-			memRepo.delete(member);
+			memRepo.deleteById(username);
 			FizzConstants.log(
 					Logger_State.INFO, 
 					FizzConstants.Receipt_Messages.DELETED_MEMBER.getMessage(),
 					MemberContoller.class);
 			return new Receipt(
 					FizzConstants.Receipt_Messages.DELETED_MEMBER.getMessage(),
-					member);
+					username);
 		}
 		catch(Exception e)
 		{
@@ -131,12 +132,12 @@ public class MemberContoller {
 	
 	@RequestMapping(value="/getProfile",method=RequestMethod.POST)
 	@ResponseBody
-	public Receipt getProfile(@RequestBody Member member) throws FizzException
+	public Receipt getProfile(@RequestParam String username) throws FizzException
 	{
 		try
 		{
 			Profile profile = new Profile(
-					memRepo.findById(member.getUsername())
+					memRepo.findById(username)
 						.get()
 						);
 			FizzConstants.log(

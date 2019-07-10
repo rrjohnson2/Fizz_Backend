@@ -4,7 +4,7 @@ import com.jsware.fizz.model.member.Member;
 
 public class Ticket {
 
-	private Member customer;
+	private String customer;
 	
 	private Object data;
 	
@@ -12,7 +12,7 @@ public class Ticket {
 	
 	
 
-	public Ticket(Member customer, Object data) {
+	public Ticket(String customer, Object data) {
 		super();
 		this.customer = customer;
 		this.data = data;
@@ -20,11 +20,11 @@ public class Ticket {
 
 
 
-	public Member getCustomer() {
+	public String getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(Member customer) {
+	public void setCustomer(String customer) {
 		this.customer = customer;
 	}
 

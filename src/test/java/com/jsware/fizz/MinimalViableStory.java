@@ -34,10 +34,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsware.fizz.constants.FizzConstants;
+import com.jsware.fizz.model.idea.Idea;
 import com.jsware.fizz.model.interactions.Receipt;
 import com.jsware.fizz.model.interactions.Ticket;
 import com.jsware.fizz.model.member.Member;
 import com.jsware.fizz.model.member.Profile;
+import com.jsware.fizz.testconstants.MemberJson;
 import com.jsware.fizz.testconstants.TestConstants;
 
 @RunWith(SpringRunner.class)
@@ -80,40 +82,50 @@ public class MinimalViableStory {
 	}
 
 	@Test
-	public void createMember() throws Exception {
+	public void createSam() throws Exception {
 		
-		String member_json = mapper.writeValueAsString(ts.sam_bethe_json);
-		ResultActions ra = this.mockMvc.perform( 
-				post("/createMember")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(member_json ));
-		
-		 MvcResult mvcResults = ra
-			.andDo(print())
-			.andExpect(status().isOk())
-			.andReturn();
-		 
-		 Receipt confirmed = mapper.readValue(
-				 mvcResults.getResponse().getContentAsString(),
-				 Receipt.class);
-		 assertNotNull(confirmed);
-		 Member member = mapper.readValue(
-				 			mapper.writeValueAsString(confirmed.getData()),
-				 			Member.class);
-		 Profile results = getSamProfile();
+		createMember(ts.sam_bethe_json);
+		Profile results = getProfile(ts.sam_bethe.getUsername());
 			
 		 assertTrue(!results.getPreferences().isEmpty());
 	}
 	
 	@Test
-	public void createIdea() throws Exception
+	public void createSamIdea() throws Exception
 	{
-		String idea = mapper.writeValueAsString(ts.sam_idea);
+		String ticket_json = mapper.writeValueAsString(ts.sam_idea_ticket);
 		
 		ResultActions resaction = this.mockMvc.perform(
 				post("/createIdea")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(idea));
+					.content(ticket_json));
+		MvcResult results = resaction
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andReturn();
+		
+		Receipt receipt= mapper.readValue(
+				results.getResponse().
+					getContentAsString(),
+				Receipt.class);
+		
+		ts.sam_idea= mapper.readValue(
+				mapper.writeValueAsString(receipt.getData()),
+				Idea.class);
+		
+		assertNotNull(receipt);
+	}
+	
+//	@Test
+	public void retortDavid() throws Exception
+	{
+		ts.DavidReed();
+		String retortJson = mapper.writeValueAsString(ts.david_retort);
+		
+		ResultActions resaction = this.mockMvc.perform(
+				post("/retortIdea")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(retortJson));
 		MvcResult results = resaction
 			.andDo(print())
 			.andExpect(status().isOk())
@@ -126,14 +138,28 @@ public class MinimalViableStory {
 		
 		assertNotNull(receipt);
 	}
-
-	private Profile getSamProfile() throws JsonProcessingException, Exception, IOException, JsonParseException,
+	
+	
+	private void createMember(MemberJson mj) throws JsonProcessingException, Exception, IOException, JsonParseException,
 			JsonMappingException, UnsupportedEncodingException {
-		String member_json = mapper.writeValueAsString(ts.sam_bethe);
+		String member_json = mapper.writeValueAsString(mj);
+		ResultActions ra = this.mockMvc
+				.perform(post("/createMember").contentType(MediaType.APPLICATION_JSON).content(member_json));
+
+		MvcResult mvcResults = ra.andDo(print()).andExpect(status().isOk()).andReturn();
+
+		Receipt confirmed = mapper.readValue(mvcResults.getResponse().getContentAsString(), Receipt.class);
+		assertNotNull(confirmed);
+		Member member = mapper.readValue(mapper.writeValueAsString(confirmed.getData()), Member.class);
+	}
+
+	
+	private Profile getProfile(String username) throws JsonProcessingException, Exception, IOException, JsonParseException,
+			JsonMappingException, UnsupportedEncodingException {
 		ResultActions ra = this.mockMvc.perform( 
 				post("/getProfile")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(member_json ));
+					.param("username", username));
 		
 		 MvcResult mvcResults = ra
 			.andDo(print())

@@ -22,6 +22,7 @@ import com.jsware.fizz.model.idea.Idea;
 import com.jsware.fizz.model.idea.Rating;
 import com.jsware.fizz.model.interactions.Receipt;
 import com.jsware.fizz.model.interactions.Ticket;
+import com.jsware.fizz.model.member.Member;
 import com.jsware.fizz.repository.FocusRepository;
 import com.jsware.fizz.repository.IdeaRepository;
 import com.jsware.fizz.repository.MemberRepository;
@@ -56,10 +57,17 @@ public class TicketController {
 
 	@RequestMapping(value="/createIdea", method=RequestMethod.POST)
 	@ResponseBody
-	public Receipt createIdea(@RequestBody Idea idea) throws JsonParseException, JsonMappingException, JsonProcessingException, IOException, FizzException
+	public Receipt createIdea(@RequestBody Ticket ticket) throws JsonParseException, JsonMappingException, JsonProcessingException, IOException, FizzException
 	{
 		
 		try {
+			Member creator = memRepo.findById(ticket.getCustomer()).get();
+			
+			Idea idea = mapper.readValue(
+					mapper.writeValueAsString(ticket.getData()),
+					Idea.class);
+			
+			idea.setCreator(creator);
 			
 			idea = ideaRepo.save(idea);
 			
@@ -85,6 +93,27 @@ public class TicketController {
 		} catch (Exception e) {
 			FizzConstants.log(Logger_State.ERROR, e.getMessage(), TicketController.class);
 			throw new FizzException(FizzConstants.Error_Messages.CREATED_IDEA_X.getMessage());
+		}
+	}
+	
+	@RequestMapping(value="/retortIdea", method=RequestMethod.POST)
+	@ResponseBody
+	public Receipt retortIdea(@RequestBody Ticket ticket) throws JsonParseException, JsonMappingException, JsonProcessingException, IOException, FizzException
+	{
+		
+		try {
+			
+			FizzConstants.log(
+					Logger_State.INFO, 
+					FizzConstants.Receipt_Messages.CREATED_RETORT.getMessage(),
+					MemberContoller.class);
+			return new Receipt(
+					FizzConstants.Receipt_Messages.CREATED_RETORT.getMessage(),
+					null);
+			
+		} catch (Exception e) {
+			FizzConstants.log(Logger_State.ERROR, e.getMessage(), TicketController.class);
+			throw new FizzException(FizzConstants.Error_Messages.CREATED_RETORT_X.getMessage());
 		}
 	}
 	
