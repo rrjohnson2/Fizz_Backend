@@ -18,6 +18,7 @@ import org.hibernate.annotations.Fetch;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jsware.fizz.model.idea.Idea;
+import com.jsware.fizz.model.rating.Rating;
 import com.jsware.fizz.model.retort.Message;
 import com.jsware.fizz.model.retort.Retort;
 
@@ -57,6 +58,10 @@ public class Member {
 	@OneToMany(mappedBy="creator")
 	@JsonIgnore
 	private List<Message> created_messages = new ArrayList<Message>();
+	
+	@OneToMany(mappedBy="creator")
+	@JsonIgnore
+	private List<Rating> ratings = new ArrayList<Rating>();
 	
 	
 	
@@ -176,6 +181,10 @@ public class Member {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	
+	public List<Rating> getRating() {
+		return ratings;
+	}
 
 
 	public void setPassword(String password)
@@ -258,6 +267,21 @@ public class Member {
 	{
 		return saltyPassword.equals(salt+passowrd+salt);
 	}
+	
+	public Rating hasRatedIdea(Idea idea)
+	{
+		for (Rating r : ratings)
+		{
+			if(r.getIdea()==idea)
+			{
+				return r;
+			}
+		}
+		
+		return new Rating();
+	}
+
+
 	
 	
 

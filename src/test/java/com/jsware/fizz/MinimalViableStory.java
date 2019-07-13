@@ -16,8 +16,10 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,12 +42,14 @@ import com.jsware.fizz.model.interactions.Receipt;
 import com.jsware.fizz.model.interactions.Ticket;
 import com.jsware.fizz.model.member.Member;
 import com.jsware.fizz.model.member.Profile;
+import com.jsware.fizz.model.retort.Retort;
 import com.jsware.fizz.testconstants.MemberJson;
 import com.jsware.fizz.testconstants.TestConstants;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MinimalViableStory {
 	
 	/**
@@ -63,11 +67,12 @@ public class MinimalViableStory {
 	@Autowired
 	private ObjectMapper mapper;
 	
-	private TestConstants ts = new TestConstants();
+	private static TestConstants ts;
 	
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		ts = new TestConstants();
 	}
 
 	@AfterClass
@@ -82,14 +87,10 @@ public class MinimalViableStory {
 	public void tearDown() throws Exception {
 	}
 	
+
+
 	@Test
-	public void minimalTest() throws Exception
-	{
-		createSam();
-		createSamIdea();
-		retortDavid();
-	}
-	private void createSam() throws Exception {
+	public void AcreateSam() throws Exception {
 		
 		createMember(ts.sam_bethe_json);
 		Profile results = getProfile(ts.sam_bethe.getUsername());
@@ -97,8 +98,8 @@ public class MinimalViableStory {
 		assertTrue(!results.getPreferences().isEmpty());
 	}
 	
-	
-	private void createSamIdea() throws Exception
+	@Test
+	public void BcreateSamIdea() throws Exception
 	{
 		String ticket_json = mapper.writeValueAsString(ts.sam_idea_ticket);
 		
@@ -107,7 +108,6 @@ public class MinimalViableStory {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(ticket_json));
 		MvcResult results = resaction
-			.andDo(print())
 			.andExpect(status().isOk())
 			.andReturn();
 		
@@ -123,9 +123,11 @@ public class MinimalViableStory {
 		assertNotNull(receipt);
 	}
 	
-	private void retortDavid() throws Exception
+	@Test
+	public void CretortDavid() throws Exception
 	{
 		ts.DavidReed();
+		createMember(ts.david_reed_json);
 		String retortJson = mapper.writeValueAsString(ts.david_retort_ticket);
 		
 		ResultActions resaction = this.mockMvc.perform(
@@ -142,9 +144,84 @@ public class MinimalViableStory {
 					getContentAsString(),
 				Receipt.class);
 		
+		ts.david_retort= mapper.readValue(
+				mapper.writeValueAsString(receipt.getData()),
+				Retort.class);
+		
+		
 		assertNotNull(receipt);
 	}
 	
+	@Test
+	public void DrateDavid() throws JsonParseException, JsonMappingException, JsonProcessingException, UnsupportedEncodingException, IOException, Exception {
+		
+		String rateJson = mapper.writeValueAsString(ts.david_rate_ticket);
+		
+		ResultActions resaction = this.mockMvc.perform(
+				post("/rateIdea")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(rateJson));
+		MvcResult results = resaction
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andReturn();
+		
+		Receipt receipt= mapper.readValue(
+				results.getResponse().
+					getContentAsString(),
+				Receipt.class);
+		
+		assertNotNull(receipt);
+		
+	}
+	
+	@Test
+	public void ErateDavid() throws JsonParseException, JsonMappingException, JsonProcessingException, UnsupportedEncodingException, IOException, Exception {
+		
+		
+		String rateJson = mapper.writeValueAsString(ts.david_rate_ticket);
+		
+		ResultActions resaction = this.mockMvc.perform(
+				post("/rateIdea")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(rateJson));
+		MvcResult results = resaction
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andReturn();
+		
+		Receipt receipt= mapper.readValue(
+				results.getResponse().
+					getContentAsString(),
+				Receipt.class);
+		
+		assertNotNull(receipt);
+		
+	}
+	
+	@Test
+	public void FsamReply() throws JsonParseException, JsonMappingException, JsonProcessingException, UnsupportedEncodingException, IOException, Exception {
+		
+		ts.SamReply();
+		String replyJson = mapper.writeValueAsString(ts.sam_message_ticket);
+		
+		ResultActions resaction = this.mockMvc.perform(
+				post("/commentRetort")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(replyJson));
+		MvcResult results = resaction
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andReturn();
+		
+		Receipt receipt= mapper.readValue(
+				results.getResponse().
+					getContentAsString(),
+				Receipt.class);
+		
+		assertNotNull(receipt);
+		
+	}
 	
 	private void createMember(MemberJson mj) throws JsonProcessingException, Exception, IOException, JsonParseException,
 			JsonMappingException, UnsupportedEncodingException {
@@ -152,7 +229,9 @@ public class MinimalViableStory {
 		ResultActions ra = this.mockMvc
 				.perform(post("/createMember").contentType(MediaType.APPLICATION_JSON).content(member_json));
 
-		MvcResult mvcResults = ra.andDo(print()).andExpect(status().isOk()).andReturn();
+		MvcResult mvcResults = ra
+				.andExpect(status().isOk())
+				.andReturn();
 
 		Receipt confirmed = mapper.readValue(mvcResults.getResponse().getContentAsString(), Receipt.class);
 		assertNotNull(confirmed);
@@ -168,7 +247,6 @@ public class MinimalViableStory {
 					.param("username", username));
 		
 		 MvcResult mvcResults = ra
-			.andDo(print())
 			.andExpect(status().isOk())
 			.andReturn();
 		 

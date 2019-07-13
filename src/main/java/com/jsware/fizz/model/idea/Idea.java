@@ -15,7 +15,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.jsware.fizz.constants.FizzConstants.Vote_Type;
 import com.jsware.fizz.model.member.Member;
+import com.jsware.fizz.model.rating.Rating;
 import com.jsware.fizz.model.retort.Retort;
 
 @Entity
@@ -40,8 +42,8 @@ public class Idea {
 	@OneToMany(mappedBy="idea")
 	private List<Retort> resorts =  new ArrayList<Retort>();
 	
-	@OneToOne(mappedBy="idea")
-	private Rating rating;
+	@OneToMany(mappedBy="idea")
+	private List<Rating> ratings = new ArrayList<Rating>();
 	
 	public Idea() {}
 	
@@ -130,14 +132,33 @@ public class Idea {
 		this.resorts = resorts;
 	}
 
-	public Rating getRating() {
-		return rating;
+	public List<Rating> getRating() {
+		return ratings;
+	}
+	
+	public int getUpVotes()
+	{
+		return countVotes(Vote_Type.UP);
+	}
+	
+	public int getDownVotes()
+	{
+		return countVotes(Vote_Type.DOWN);	
 	}
 
-	public void setRating(Rating rating) {
-		this.rating = rating;
+	private int countVotes(Vote_Type vote)
+	{
+		int count = 0;
+		
+		for(Rating rate :ratings)
+		{
+			if(rate.getVote()==vote)
+			{
+				count++;
+			}
+		}
+		return count;
 	}
-
 
 	
 	

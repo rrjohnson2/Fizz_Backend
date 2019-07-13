@@ -1,6 +1,7 @@
 package com.jsware.fizz.model.retort;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jsware.fizz.model.idea.Idea;
 import com.jsware.fizz.model.member.Member;
 
@@ -26,6 +28,7 @@ public class Retort {
 	
 	@ManyToOne()
 	@JoinColumn(name="idea")
+	@JsonIgnore
 	private Idea idea;
 	
 	@ManyToOne()
@@ -37,6 +40,8 @@ public class Retort {
 	
 	@OneToMany(mappedBy="retort")
 	private List<Message> messages = new ArrayList<Message>();
+	
+	private Date timestamp = new Date();
 	
 	public Retort() {
 		
@@ -91,6 +96,30 @@ public class Retort {
 
 	public void setCreator(Member creator) {
 		this.creator = creator;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public List<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<Message> messages) {
+		this.messages = messages;
+	}
+
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
 	}
 	
 	

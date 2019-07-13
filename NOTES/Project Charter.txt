@@ -1,0 +1,65 @@
+Project Goals
+	- Develop, deploy, and maintain a web application designed to give users 
+	  access to real time feedback for their ideas from other users. 
+Mission Statement 
+	- Our mission is to provide creatives and innovators a fully interactive platform 
+	  where their ideas and/or plans can be critiqued in real time by other users.
+	  We will be an open public utility and our platform will have simple sign up capabilities
+	  and completely free to the public.
+Scope
+	- MVP
+		- A user can post their idea in text form and other user can upVote, downVote, or retort.
+		- Companies can sign up with a payment plan.
+	- Future
+		- AI
+			- Machine Learning algorithms to parse through the feedback.
+			- Graphically represent feedback and common tropes.
+	- Idea Security 
+		- Ideas can be hidden from certain users and only shared with certain groups or ranked members
+	 
+Implementation Plan
+	- Demo
+		- Use paid focus groups for feedback and testing 
+		- Use feedback to iterate 
+		- IF THIS STAGE FAILS CUT YOUR DAMN LOSES
+	- Launch 
+		- Raise Funds
+			- Investors
+			- Kickstart
+			- Get companies on the platform
+			- Out of pocket
+		- Market
+			- Commercials
+			- Sponsor youtubers 
+			- Sponsors interest groups 
+			- Social media pages
+		- Get User Feedback and Iterate
+Roles
+	- Roice Johnson
+		- Lead Engineer/ Ceo
+			- Hires or recruits engineers
+			- On time delivery of software deployments
+			- Technology Stack Engineer
+			- Company visionary 
+	- Grace Johnson
+		- Salesman
+			- Talks to companies and interest groups to get their business
+	- Amy Harrington 
+		- Marketing Manager
+			- Social Media Marketing
+			- Commercial Producers
+			- Brand Engineer
+	- Jovante Hill 
+		- Lead Graphic Designer
+			- Create icons and logo
+	- Juan Acosta 
+		- Consultant 
+Risks
+	- Nobody Cares
+	- Out of pocket cost (2500)
+	- Nobody likes it
+
+Rewards
+	- Great Experience
+	- Could be a 15 million dollar business 
+

@@ -53,10 +53,13 @@ public class MemberContoller {
 			if(!memRepo.existsById(member.getUsername()))
 			{
 				memRepo.save(member);
-				for(Preference preference:member.getPreferences())
+				if(member.getPreferences()!=null)
 				{
-					preference.setOwner(member);
-					prefRepo.save(preference);
+					for(Preference preference:member.getPreferences())
+					{
+						preference.setOwner(member);
+						prefRepo.save(preference);
+					}
 				}
 			}
 			else 

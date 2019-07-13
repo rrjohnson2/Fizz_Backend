@@ -1,13 +1,17 @@
-package com.jsware.fizz.model.idea;
+package com.jsware.fizz.model.rating;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jsware.fizz.constants.FizzConstants.Vote_Type;
+import com.jsware.fizz.model.idea.Idea;
+import com.jsware.fizz.model.member.Member;
 
 @Entity
 @SequenceGenerator(name="rating_seq", initialValue=1)
@@ -15,31 +19,20 @@ public class Rating {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="rating_seq")
 	private long id;
-
-	private double score;
 	
-	private int likes;
+	private Vote_Type vote;
 	
-	private int dislikes;
+	@ManyToOne
+	@JsonIgnore
+	private Member creator;
 	
-	@OneToOne()
+	@ManyToOne
 	@JsonIgnore
 	private Idea idea;
 	
-	
-	public Rating(Idea idea, double score, int likes, int dislikes) {
-		// TODO Auto-generated constructor stub
-		this.score=score;
-		this.likes=likes;
-		this.dislikes=dislikes;
-		this.idea=idea;
-	}
-
-
 	public Rating() {
 		// TODO Auto-generated constructor stub
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -69,42 +62,6 @@ public class Rating {
 		return id;
 	}
 
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-
-	public double getScore() {
-		return score;
-	}
-
-
-	public void setScore(double score) {
-		this.score = score;
-	}
-
-
-	public int getLikes() {
-		return likes;
-	}
-
-
-	public void setLikes(int likes) {
-		this.likes = likes;
-	}
-
-
-	public int getDislikes() {
-		return dislikes;
-	}
-
-
-	public void setDislikes(int dislikes) {
-		this.dislikes = dislikes;
-	}
-
-
 	public Idea getIdea() {
 		return idea;
 	}
@@ -114,15 +71,22 @@ public class Rating {
 		this.idea = idea;
 	}
 
-
-	public void init(Idea idea) {
-		this.idea= idea;
-		this.score=0.0;
-		this.likes=0;
-		this.dislikes=0;
-		
+	public Member getCreator() {
+		return creator;
 	}
-	
+
+
+	public void setCreator(Member creator) {
+		this.creator = creator;
+	}
+
+	public Vote_Type getVote() {
+		return vote;
+	}
+
+	public void setVote(Vote_Type vote) {
+		this.vote = vote;
+	}
 	
 	
 	

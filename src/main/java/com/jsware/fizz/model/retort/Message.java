@@ -8,6 +8,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jsware.fizz.model.member.Member;
 
 @Entity
@@ -22,10 +23,20 @@ public class Message {
 	private String content;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Retort retort;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Member creator;
+	
+	public Message() {}
+
+	public Message(Member creator, Retort retort, String content) {
+		this.content=content;
+		this.creator=creator;
+		this.retort=retort;
+	}
 
 	public String getContent() {
 		return content;

@@ -7,12 +7,13 @@ import java.util.List;
 import org.assertj.core.util.Arrays;
 
 import com.jsware.fizz.constants.FizzConstants.Category;
+import com.jsware.fizz.constants.FizzConstants.Vote_Type;
 import com.jsware.fizz.model.idea.Focus;
 import com.jsware.fizz.model.idea.Idea;
-import com.jsware.fizz.model.idea.Rating;
 import com.jsware.fizz.model.interactions.Ticket;
 import com.jsware.fizz.model.member.Member;
 import com.jsware.fizz.model.member.Preference;
+import com.jsware.fizz.model.rating.Rating;
 import com.jsware.fizz.model.retort.Retort;
 
 public class TestConstants {
@@ -37,8 +38,12 @@ public class TestConstants {
 	public Idea sam_idea= new Idea("Cats On Water", "cats need sufboards please dont be a bitch about it");
 	public Retort david_retort;
 	public Ticket sam_idea_ticket=new Ticket();
+	public Ticket sam_message_ticket=new Ticket();
+	public HashMap<String,Object> sam_reply_data= new HashMap<String, Object>();
 	public Ticket david_retort_ticket= new Ticket();
+	public Ticket david_rate_ticket = new Ticket();
 	public HashMap<String,Object> david_retort_data= new HashMap<String, Object>();
+	public HashMap<String,Object> david_rating_data= new HashMap<String, Object>();
 	 
 	
 	public TestConstants() {
@@ -54,6 +59,11 @@ public class TestConstants {
 		david_retort_data.put("retort", david_retort);
 		david_retort_ticket.setCustomer(david_reed.getUsername());
 		david_retort_ticket.setData(david_retort_data);
+		david_rate_ticket.setCustomer(david_reed.getUsername());
+		david_rating_data.put("idea", sam_idea.getId());
+		david_rating_data.put("vote", Vote_Type.UP);
+		david_rate_ticket.setData(david_rating_data);
+		
 		
 	}
 
@@ -65,6 +75,14 @@ public class TestConstants {
 		sam_idea.getFocus().add(sam_idea_focus);
 		sam_idea_ticket.setCustomer(sam_bethe.getUsername());
 		sam_idea_ticket.setData(sam_idea);
+	}
+	public void SamReply()
+	{
+		sam_reply_data.put("comment", "thanks");
+		sam_reply_data.put("retort", david_retort.getId());
+		sam_message_ticket.setCustomer(sam_bethe.getUsername());
+		sam_message_ticket.setData(sam_reply_data);
+
 	}
 
 }

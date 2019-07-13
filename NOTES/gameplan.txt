@@ -1,0 +1,33 @@
+
+1. Develop Demo Fizz demo.0.1
+	- Complete MVP's
+	- cost 
+		cost to delpoy on aws
+		
+2. Gather Fcous Group
+	- 20 people 
+	- 10 dollars person
+	- order food 
+	- cost
+		- people 
+			200
+		- food
+			200
+			
+3. Repeat 1.2 Until Launch  Fizz z.1.0
+	- Hire or Invite engineers 
+	- only lanuch with clean pro site 
+	- cost 
+		- get the domain
+		- equity or freelancing constractors *EXPENSIVE*
+
+4. Get Patreons
+	- talk to tech bloggers 
+	- talk to tech youtubers 
+		- sponors vidoes 
+	- start kickstarter
+	- talk with businesses to feature advertisements
+	- raise fund to market
+	
+5 Use Funds to Innovate and Market and Grow 
+		

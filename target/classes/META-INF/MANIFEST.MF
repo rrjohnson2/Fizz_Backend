@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: fizz
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: rrjoh
+Implementation-Vendor-Id: com.jsware
+Build-Jdk: 1.8.0_211
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/fizz
+Created-By: Maven Integration for Eclipse
+
