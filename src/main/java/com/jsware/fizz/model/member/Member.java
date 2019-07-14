@@ -10,11 +10,9 @@ import java.util.Random;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.Fetch;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jsware.fizz.model.idea.Idea;
@@ -33,6 +31,7 @@ public class Member {
 	
 	private String lastName;
 	
+	@JsonIgnore
 	private String email;
 	
 	@JsonIgnore
@@ -51,6 +50,7 @@ public class Member {
 	private List<Retort> created_retorts = new ArrayList<Retort>();
 	
 	@OneToMany(mappedBy="owner")
+	@JsonIgnore
 	private List<Preference> preferences = new ArrayList<Preference>();
 	
 
@@ -182,7 +182,7 @@ public class Member {
 		this.username = username;
 	}
 	
-	public List<Rating> getRating() {
+	public List<Rating> getRatings() {
 		return ratings;
 	}
 

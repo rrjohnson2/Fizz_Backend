@@ -106,6 +106,8 @@ public class FizzConstants {
 		
 	}
 	
+	
+	
 	public static void log(Logger_State state,String msg,Class<?> classObj) {
 		logger = LoggerFactory.getLogger(classObj);
 		

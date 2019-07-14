@@ -3,6 +3,7 @@ package com.jsware.fizz;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -209,6 +210,24 @@ public class MinimalViableStory {
 				post("/commentRetort")
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(replyJson));
+		MvcResult results = resaction
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andReturn();
+		
+		Receipt receipt= mapper.readValue(
+				results.getResponse().
+					getContentAsString(),
+				Receipt.class);
+		
+		assertNotNull(receipt);
+		
+	}
+	
+	@Test
+	public void GallIdeas() throws JsonParseException, JsonMappingException, JsonProcessingException, UnsupportedEncodingException, IOException, Exception {
+				
+		ResultActions resaction = this.mockMvc.perform(get("/getAllIdeas"));
 		MvcResult results = resaction
 			.andDo(print())
 			.andExpect(status().isOk())

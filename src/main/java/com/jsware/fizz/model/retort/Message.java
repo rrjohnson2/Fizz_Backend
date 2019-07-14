@@ -27,7 +27,6 @@ public class Message {
 	private Retort retort;
 	
 	@ManyToOne
-	@JsonIgnore
 	private Member creator;
 	
 	public Message() {}
