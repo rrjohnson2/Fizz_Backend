@@ -40,7 +40,7 @@ public class Idea {
 	private String title, description;
 	
 	@OneToMany(mappedBy="idea")
-	private List<Retort> resorts =  new ArrayList<Retort>();
+	private List<Retort> retorts =  new ArrayList<Retort>();
 	
 	@OneToMany(mappedBy="idea")
 	private List<Rating> ratings = new ArrayList<Rating>();
@@ -124,12 +124,12 @@ public class Idea {
 		this.description = description;
 	}
 
-	public List<Retort> getResorts() {
-		return resorts;
+	public List<Retort> getRetorts() {
+		return retorts;
 	}
 
-	public void setResorts(List<Retort> resorts) {
-		this.resorts = resorts;
+	public void setRetorts(List<Retort> resorts) {
+		this.retorts = resorts;
 	}
 
 	public List<Rating> getRating() {

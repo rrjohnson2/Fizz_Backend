@@ -1,5 +1,7 @@
 package com.jsware.fizz.model.retort;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +31,8 @@ public class Message {
 	@ManyToOne
 	private Member creator;
 	
+	private Date timestamp= new Date();
+	
 	public Message() {}
 
 	public Message(Member creator, Retort retort, String content) {
@@ -51,6 +55,10 @@ public class Message {
 
 	public void setCreator(Member creator) {
 		this.creator = creator;
+	}
+
+	public Date getTimestamp() {
+		return timestamp;
 	}
 
 }
