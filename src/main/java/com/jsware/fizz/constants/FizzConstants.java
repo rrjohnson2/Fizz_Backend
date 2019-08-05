@@ -36,21 +36,9 @@ public class FizzConstants {
 	
 	public static enum Category{
 		
-		TECHNOLOGY("TECHNOLOGY"),
-		MOVIES("MOVIES"),
-		MISC("MISSCELLANEOUS");
-		
-		private String name;
-		
-		private Category(String name)
-		{
-			this.name=name;
-		}
-		
-		public String getName()
-		{
-			return this.name;
-		}
+		TECHNOLOGY,
+		MOVIES,
+		MISC;
 		
 	}
 	
@@ -65,7 +53,9 @@ public class FizzConstants {
 		CREATED_IDEA("IDEA SUCCESSFULLY CREATED"), 
 		CREATED_RETORT("RETORT SUCCESSFUL"), 
 		RATED_IDEA("IDEA RATED SUCCESSFULLY"), 
-		COMMENTED("COMMENT SUCCESSFULL");
+		COMMENTED("COMMENT SUCCESSFULL"),
+		LOGIN_SUCCESSFUL("LOGIN SUCCESSFUL"),
+		UPDATE_SUCCESSFUL("UPDATED PROFILE");
 		
 		private String message;
 		
@@ -90,7 +80,9 @@ public class FizzConstants {
 		CREATED_IDEA_X("IDEA CREATION FAILED"), 
 		CREATED_RETORT_X("RETORT FAILED"), 
 		RATING_X("RATING FAILED"),
-		COMMENTED_X("COMMENT FAILED");
+		COMMENTED_X("COMMENT FAILED"),
+		LOGIN_X("LOGIN FAILED"),
+		UPDATE_X("UPDATE FAILED ");
 		
 		private String message;
 		
@@ -132,7 +124,7 @@ public class FizzConstants {
 		
 		for(Category cat : Category.values())
 		{
-			categories.add(cat.getName());
+			categories.add(cat.toString());
 		}
 		return categories;
 	}

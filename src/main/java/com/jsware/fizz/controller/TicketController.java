@@ -73,7 +73,7 @@ public class TicketController {
 	{
 		
 		try {
-			Member creator = memRepo.findById(ticket.getCustomer()).get();
+			Member creator = memRepo.findByUsername(ticket.getCustomer());
 			
 			Idea idea = mapper.readValue(
 					mapper.writeValueAsString(ticket.getData()),
@@ -109,7 +109,7 @@ public class TicketController {
 	{
 		
 		try {
-			Member creator = memRepo.findById(ticket.getCustomer()).get();
+			Member creator = memRepo.findByUsername(ticket.getCustomer());
 			
 			HashMap<String, Object> data = mapper.readValue(
 					mapper.writeValueAsString(ticket.getData()),
@@ -150,7 +150,7 @@ public class TicketController {
 	{
 		
 		try {
-			Member creator = memRepo.findById(ticket.getCustomer()).get();
+			Member creator = memRepo.findByUsername(ticket.getCustomer());
 			
 			@SuppressWarnings("unchecked")
 			HashMap<String, Object> data = mapper.readValue(
@@ -201,7 +201,7 @@ public class TicketController {
 	{
 		
 		try {
-			Member creator = memRepo.findById(ticket.getCustomer()).get();
+			Member creator = memRepo.findByUsername(ticket.getCustomer());
 			
 			@SuppressWarnings("unchecked")
 			HashMap<String, Object> data = mapper.readValue(

@@ -10,9 +10,11 @@ import java.util.Random;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
+import javax.persistence.SequenceGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jsware.fizz.model.idea.Idea;
@@ -21,9 +23,13 @@ import com.jsware.fizz.model.retort.Message;
 import com.jsware.fizz.model.retort.Retort;
 
 @Entity
+@SequenceGenerator(name="mem_seq", initialValue=1)
 public class Member {
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="mem_seq")
+	private long id;
+	
 	@Column( unique = true ,length=10)
 	private String username;
 	
@@ -37,6 +43,7 @@ public class Member {
 	@JsonIgnore
 	private String salt;
 	
+
 	@JsonIgnore
 	private String saltyPassword;
 	
@@ -74,6 +81,19 @@ public class Member {
 		this.email = email;
 		this.preferences = preferences;
 	}
+	
+	
+	
+
+
+
+
+
+	public void setRatings(List<Rating> ratings) {
+		this.ratings = ratings;
+	}
+
+
 
 	public Member() {};
 
@@ -125,7 +145,14 @@ public class Member {
 	public void setCreated_ideas(List<Idea> created_ideas) {
 		this.created_ideas = created_ideas;
 	}
+	
+	public long getId() {
+		return id;
+	}
 
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	
 	public String getSalt() {
@@ -263,9 +290,9 @@ public class Member {
 	}
 
 
-	public boolean AccessGranted(String passowrd)
+	public boolean AccessGranted(String password)
 	{
-		return saltyPassword.equals(salt+passowrd+salt);
+		return saltyPassword.equals(salt+encrypt(salt,password)+salt);
 	}
 	
 	public Rating hasRatedIdea(Idea idea)
@@ -279,6 +306,33 @@ public class Member {
 		}
 		
 		return new Rating();
+	}
+
+	public void update(Member update) {
+		
+		if(update.firstName!=null)
+		{
+			this.firstName=update.firstName;
+		}
+		if(update.lastName!=null)
+		{
+			this.lastName=update.lastName;
+		}
+		if(update.username!=null)
+		{
+			this.username=update.username;
+		}
+		if(update.email!=null)
+		{
+			this.email=update.email;
+		}
+		if(update.getSaltyPassword()!=null)
+		{
+			this.salt=update.salt;
+			this.saltyPassword=update.saltyPassword;
+		}
+		
+		
 	}
 
 
