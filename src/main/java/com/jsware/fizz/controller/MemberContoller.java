@@ -55,7 +55,7 @@ public class MemberContoller {
 		{
 			if(!memRepo.existByUsername(member.getUsername()))
 			{
-				memRepo.save(member);
+				member =memRepo.save(member);
 				if(member.getPreferences()!=null)
 				{
 					for(Preference preference:member.getPreferences())

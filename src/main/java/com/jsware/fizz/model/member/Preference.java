@@ -15,7 +15,7 @@ import javax.persistence.UniqueConstraint;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jsware.fizz.constants.FizzConstants.Category;
 @Table(
-	uniqueConstraints = @UniqueConstraint(columnNames = { "owner_username","category" })	
+	uniqueConstraints = @UniqueConstraint(columnNames = { "owner_id","category" })	
 	)
 @Entity
 @SequenceGenerator(name="pref_seq", initialValue=1)

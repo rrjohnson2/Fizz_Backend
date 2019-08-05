@@ -261,7 +261,7 @@ public class MinimalViableStory {
 	private Profile getProfile(String username) throws JsonProcessingException, Exception, IOException, JsonParseException,
 			JsonMappingException, UnsupportedEncodingException {
 		ResultActions ra = this.mockMvc.perform( 
-				post("/getProfile")
+				get("/getProfile")
 					.contentType(MediaType.APPLICATION_JSON)
 					.param("username", username));
 		
