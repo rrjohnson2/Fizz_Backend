@@ -3,6 +3,7 @@ package com.jsware.fizz.controller;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -14,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsware.fizz.constants.FizzConstants;
 import com.jsware.fizz.constants.FizzConstants.Error_Messages;
 import com.jsware.fizz.constants.FizzConstants.Logger_State;
 import com.jsware.fizz.exceptions.FizzException;
 import com.jsware.fizz.model.interactions.Receipt;
+import com.jsware.fizz.model.interactions.Ticket;
 import com.jsware.fizz.model.member.Member;
 import com.jsware.fizz.model.member.Preference;
 import com.jsware.fizz.model.member.Profile;
@@ -34,15 +38,16 @@ import com.jsware.fizz.repository.PreferenceRepository;
 @Controller
 public class MemberContoller {
 	
+	@Autowired
 	private MemberRepository memRepo;
+	
+	@Autowired
 	private PreferenceRepository prefRepo;
 	
 	@Autowired
-	public MemberContoller(MemberRepository memRepo, PreferenceRepository prefRepo)
-	{
-		this.memRepo=memRepo;
-		this.prefRepo=prefRepo;
-	}
+	private ObjectMapper mapper;
+	
+	
 	
 	@RequestMapping(value="/createMember",method=RequestMethod.POST)
 	@ResponseBody
@@ -50,9 +55,9 @@ public class MemberContoller {
 	{
 		try
 		{
-			if(!memRepo.existsById(member.getUsername()))
+			if(!memRepo.existByUsername(member.getUsername()))
 			{
-				memRepo.save(member);
+				member =memRepo.save(member);
 				if(member.getPreferences()!=null)
 				{
 					for(Preference preference:member.getPreferences())
@@ -102,7 +107,7 @@ public class MemberContoller {
 							new Random().nextInt(5000)
 							)
 					);
-			if(!memRepo.existsById(username_suggested))
+			if(!memRepo.existByUsername(username_suggested))
 			{
 				data.add(username_suggested);
 				count++;
@@ -117,7 +122,7 @@ public class MemberContoller {
 	{
 		try
 		{
-			memRepo.deleteById(username);
+			memRepo.deeleteByUsername(username);
 			FizzConstants.log(
 					Logger_State.INFO, 
 					FizzConstants.Receipt_Messages.DELETED_MEMBER.getMessage(),
@@ -133,15 +138,14 @@ public class MemberContoller {
 		}
 	}
 	
-	@RequestMapping(value="/getProfile",method=RequestMethod.POST)
+	@RequestMapping(value="/getProfile",method=RequestMethod.GET)
 	@ResponseBody
 	public Receipt getProfile(@RequestParam String username) throws FizzException
 	{
 		try
 		{
 			Profile profile = new Profile(
-					memRepo.findById(username)
-						.get()
+					memRepo.findByUsername(username)
 						);
 			FizzConstants.log(
 					Logger_State.INFO, 
@@ -157,7 +161,85 @@ public class MemberContoller {
 			throw new FizzException(FizzConstants.Error_Messages.PROFILE_X.getMessage());
 		}
 	}
+	
+	@RequestMapping(value="/login",method=RequestMethod.POST)
+	@ResponseBody
+	public Receipt login(@RequestBody Ticket ticket) throws FizzException
+	{
+		try
+		{
+			Member member = memRepo.findByUsername(ticket.getCustomer());
+			String password = (String) ticket.getData();
+			if(!member.AccessGranted(password))
+			{
+				throw new FizzException(FizzConstants.Error_Messages.LOGIN_X.getMessage());
+			}
+			FizzConstants.log(
+					Logger_State.INFO, 
+					FizzConstants.Receipt_Messages.LOGIN_SUCCESSFUL.getMessage(),
+					MemberContoller.class);
+			return new Receipt(
+					FizzConstants.Receipt_Messages.LOGIN_SUCCESSFUL.getMessage(),
+					member);
+		}
+		catch(Exception e)
+		{
+			FizzConstants.log(Logger_State.ERROR, e.getMessage(), MemberContoller.class);
+			throw new FizzException(FizzConstants.Error_Messages.LOGIN_X.getMessage());
+		}
+	}
+	
+	@RequestMapping(value="/updateProfile",method=RequestMethod.POST)
+	@ResponseBody
+	public Receipt updateProfile(@RequestBody Ticket ticket) throws FizzException
+	{
+		try
+		{
+			Member member = memRepo.findByUsername(ticket.getCustomer());
+			Profile profile = null;
+			HashMap<String, Object> data = mapper.readValue(
+ 					mapper.writeValueAsString(ticket.getData()),
+					HashMap.class);
+			
+			String password= (String) data.get("old_password");
+			
+			if(!member.AccessGranted(password))
+			{
+				throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
+			}
+			
+			this.mapper.disable(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES);
+			
+			HashMap update = mapper.readValue(
+ 					mapper.writeValueAsString(data.get("member")),
+					HashMap.class);
+			
+			member.update(update);
+			
+			member= memRepo.save(member);
+			
+			profile= (Profile) getProfile(member.getUsername()).getData();
+			
+			
+			
+			FizzConstants.log(
+					Logger_State.INFO, 
+					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
+					MemberContoller.class);
+			return new Receipt(
+					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
+				profile);
+		}
+		catch(Exception e)
+		{
+			FizzConstants.log(Logger_State.ERROR, e.getMessage(), MemberContoller.class);
+			throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
+		}
+	}
+
+
 	  
+	
 	
 	
 }
