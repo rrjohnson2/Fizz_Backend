@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsware.fizz.constants.FizzConstants;
 import com.jsware.fizz.constants.FizzConstants.Error_Messages;
@@ -45,6 +46,7 @@ public class MemberContoller {
 	
 	@Autowired
 	private ObjectMapper mapper;
+	
 	
 	
 	@RequestMapping(value="/createMember",method=RequestMethod.POST)
@@ -199,21 +201,18 @@ public class MemberContoller {
  					mapper.writeValueAsString(ticket.getData()),
 					HashMap.class);
 			
-			HashMap<String, Object> member_data = mapper.readValue(
- 					mapper.writeValueAsString(data.get("member")),
-					HashMap.class);
-			
 			String password= (String) data.get("old_password");
 			
 			if(!member.AccessGranted(password))
 			{
 				throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
 			}
-			Member update = buildUpdate(member_data);
 			
-
+			this.mapper.disable(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES);
 			
-			memRepo.delete(member);
+			HashMap update = mapper.readValue(
+ 					mapper.writeValueAsString(data.get("member")),
+					HashMap.class);
 			
 			member.update(update);
 			
@@ -238,10 +237,7 @@ public class MemberContoller {
 		}
 	}
 
-	private Member buildUpdate(HashMap<String, Object> member_data) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	  
 	
 	

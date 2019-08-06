@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsware.fizz.constants.FizzConstants;
@@ -55,7 +56,7 @@ public class TicketController {
 	@Autowired
 	private MessageRepository mesRepo;
 	
-	@Autowired
+	
 	private ObjectMapper mapper;
 	
 	
@@ -66,6 +67,12 @@ public class TicketController {
 
 
 
+	@Autowired
+	public TicketController(ObjectMapper mapper) {
+		super();
+		this.mapper=mapper;
+		this.mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+	}
 
 	@RequestMapping(value="/createIdea", method=RequestMethod.POST)
 	@ResponseBody

@@ -4,6 +4,7 @@ package com.jsware.fizz.model.member;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -307,28 +308,27 @@ public class Member {
 		return new Rating();
 	}
 
-	public void update(Member update) {
+	public void update(HashMap update) {
 		
-		if(update.firstName!=null)
+		if(update.get("firstName")!=null)
 		{
-			this.firstName=update.firstName;
+			this.firstName=(String) update.get("firstName");
 		}
-		if(update.lastName!=null)
+		if(update.get("lastName")!=null)
 		{
-			this.lastName=update.lastName;
+			this.lastName=(String) update.get("lastName");
 		}
-		if(update.username!=null)
+		if(update.get("username")!=null)
 		{
-			this.username=update.username;
+			this.username=(String) update.get("username");
 		}
-		if(update.email!=null)
+		if(update.get("email")!=null)
 		{
-			this.email=update.email;
+			this.email=(String) update.get("email");
 		}
-		if(update.getSaltyPassword()!=null)
+		if(update.get("password")!=null)
 		{
-			this.salt=update.salt;
-			this.saltyPassword=update.saltyPassword;
+			this.setPassword((String) update.get("password"));
 		}
 		
 		
