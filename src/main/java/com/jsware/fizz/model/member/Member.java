@@ -37,7 +37,7 @@ public class Member {
 	
 	private String lastName;
 	
-	@JsonIgnore
+	
 	private String email;
 	
 	@JsonIgnore
@@ -57,7 +57,6 @@ public class Member {
 	private List<Retort> created_retorts = new ArrayList<Retort>();
 	
 	@OneToMany(mappedBy="owner")
-	@JsonIgnore
 	private List<Preference> preferences = new ArrayList<Preference>();
 	
 
@@ -106,7 +105,7 @@ public class Member {
 		this.created_retorts = created_retorts;
 	}
 
-
+	
 	public List<Preference> getPreferences() {
 		return preferences;
 	}
