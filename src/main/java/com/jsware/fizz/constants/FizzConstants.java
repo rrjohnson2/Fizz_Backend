@@ -4,6 +4,7 @@ package com.jsware.fizz.constants;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -11,15 +12,21 @@ import javax.persistence.Entity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.jsware.fizz.model.network.Client;
 
 @Controller
 public class FizzConstants {
 	
 	private static  Logger logger;
 	
+	private HashMap<String,Integer> activeClients = new HashMap<>();
+	
+
 	public static final int  suggestCount = 5;
 	
 	public static enum Logger_State
@@ -55,7 +62,11 @@ public class FizzConstants {
 		RATED_IDEA("IDEA RATED SUCCESSFULLY"), 
 		COMMENTED("COMMENT SUCCESSFULL"),
 		LOGIN_SUCCESSFUL("LOGIN SUCCESSFUL"),
-		UPDATE_SUCCESSFUL("UPDATED PROFILE");
+		UPDATE_SUCCESSFUL("UPDATED PROFILE"),
+		CLIENT_ADDED("CLIENT JOINED REAL TIME SERVER"),
+		CLIENT_REMOVED("CLIENT REMOVED REAL TIME SERVER"),
+		PARTIES_NOTIFIED("NOTIFIED REQUESTED PARTIES");;
+		
 		
 		private String message;
 		
@@ -83,6 +94,7 @@ public class FizzConstants {
 		COMMENTED_X("COMMENT FAILED"),
 		LOGIN_X("LOGIN FAILED"),
 		UPDATE_X("UPDATE FAILED ");
+		
 		
 		private String message;
 		
@@ -128,5 +140,46 @@ public class FizzConstants {
 		}
 		return categories;
 	}
+	
+	@RequestMapping(value="/clientActivated",method=RequestMethod.POST)
+	@ResponseBody
+	public void clientActivated(@RequestBody Client client )
+	{
+		activeClients.put(client.getUsername(), client.getKey());
+		
+		log(Logger_State.INFO,
+				Receipt_Messages.CLIENT_ADDED.getMessage(),
+				FizzConstants.class);
+	} 
+	
+	@RequestMapping(value="/clientDeactivated",method=RequestMethod.POST)
+	@ResponseBody
+	public void clientDeactivated(@RequestBody Client client )
+	{
+		activeClients.remove(client.getUsername());
+		log(Logger_State.INFO,
+				Receipt_Messages.CLIENT_REMOVED.getMessage(),
+				FizzConstants.class);
+	} 
+	
+	public void notifyParties(List<String> users)
+	{
+		List<Integer> keys_to_send = new ArrayList<>();
+		for(String user : users)
+		{
+			if(activeClients.containsKey(user))
+			{
+				keys_to_send.add(activeClients.get(user));
+			}
+		}
+		//send the list of keys to the node real time server
+		
+		log(Logger_State.INFO,
+				Receipt_Messages.PARTIES_NOTIFIED.getMessage(),
+				FizzConstants.class);
+	}
+	
+	
+	
 
 }
