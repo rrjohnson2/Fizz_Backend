@@ -5,27 +5,32 @@ package com.jsware.fizz.constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.Entity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jsware.fizz.model.member.Member;
 import com.jsware.fizz.model.network.Client;
+import com.jsware.fizz.repository.MemberRepository;
 
 @Controller
 public class FizzConstants {
 	
 	private static  Logger logger;
 	
-	private HashMap<String,Integer> activeClients = new HashMap<>();
+	private static HashMap<String,Integer> activeClients = new HashMap<>();
 	
+	private static List<Member> members = new ArrayList<>();
 
 	public static final int  suggestCount = 5;
 	
@@ -154,7 +159,7 @@ public class FizzConstants {
 	
 	@RequestMapping(value="/clientDeactivated",method=RequestMethod.POST)
 	@ResponseBody
-	public void clientDeactivated(@RequestBody Client client )
+	public static void clientDeactivated(@RequestBody Client client )
 	{
 		activeClients.remove(client.getUsername());
 		log(Logger_State.INFO,
@@ -162,7 +167,7 @@ public class FizzConstants {
 				FizzConstants.class);
 	} 
 	
-	public void notifyParties(List<String> users)
+	public static void notifyParties(List<String> users)
 	{
 		List<Integer> keys_to_send = new ArrayList<>();
 		for(String user : users)
@@ -179,7 +184,21 @@ public class FizzConstants {
 				FizzConstants.class);
 	}
 	
+	public static  void addMember(Member member)
+	{
+		members.add(member);
+	}
 	
+	@Autowired
+	public FizzConstants(MemberRepository memberRepository)
+	{
+		 Iterator<Member> it = memberRepository.findAll().iterator();
+		 
+		 while (it.hasNext()) {
+			members.add(it.next());	
+		}
+		 return;
+	}
 	
 
 }

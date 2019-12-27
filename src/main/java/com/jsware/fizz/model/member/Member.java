@@ -27,6 +27,41 @@ import com.jsware.fizz.model.retort.Retort;
 @SequenceGenerator(name="mem_seq", initialValue=1)
 public class Member {
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Member other = (Member) obj;
+		if (id != other.id)
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="mem_seq")
 	private long id;

@@ -58,6 +58,7 @@ public class MemberContoller {
 			if(!memRepo.existByUsername(member.getUsername()))
 			{
 				member =memRepo.save(member);
+				FizzConstants.addMember(member);
 				if(member.getPreferences()!=null)
 				{
 					for(Preference preference:member.getPreferences())
