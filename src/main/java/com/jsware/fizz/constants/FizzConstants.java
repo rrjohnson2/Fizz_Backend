@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.persistence.Entity;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jsware.fizz.model.idea.Focus;
+import com.jsware.fizz.model.idea.Idea;
 import com.jsware.fizz.model.member.Member;
+import com.jsware.fizz.model.member.Preference;
 import com.jsware.fizz.model.network.Client;
+import com.jsware.fizz.model.network.Notice;
 import com.jsware.fizz.repository.MemberRepository;
 
 @Controller
@@ -30,7 +34,11 @@ public class FizzConstants {
 	
 	private static HashMap<String,Integer> activeClients = new HashMap<>();
 	
-	private static List<Member> members = new ArrayList<>();
+	private static List<Member> all_members = new ArrayList<>();
+	private static MemberRepository memberRepo;
+	
+	private static List<Notice> pending_notifications= new ArrayList<>();
+			
 
 	public static final int  suggestCount = 5;
 	
@@ -52,6 +60,13 @@ public class FizzConstants {
 		MOVIES,
 		MISC;
 		
+	}
+	
+	public static enum Notification_Network_Actions{
+		FOCUS,
+		RETORT,
+		COMMENT,
+		RATING,
 	}
 	
 
@@ -167,37 +182,96 @@ public class FizzConstants {
 				FizzConstants.class);
 	} 
 	
-	public static void notifyParties(List<String> users)
+	public static void notifyParties(Object data, Notification_Network_Actions action,String creator)
 	{
-		List<Integer> keys_to_send = new ArrayList<>();
-		for(String user : users)
-		{
-			if(activeClients.containsKey(user))
+		List<String> affected_usernames = null;
+		 List<Notice> active_notifications= new ArrayList<>();
+		switch (action) {
+		case FOCUS:
+			 affected_usernames = membersWhoFollowFocus((Idea)data,creator);
+			break;
+
+		default:
+			break;
+			
+
+		}
+		for (String username : affected_usernames) {
+			Notice notice = new Notice(username, data);
+			if(activeClients.containsKey(username))
 			{
-				keys_to_send.add(activeClients.get(user));
+				active_notifications.add(notice);
+			}
+			else {
+				pending_notifications.add(notice);
 			}
 		}
-		//send the list of keys to the node real time server
-		
-		log(Logger_State.INFO,
-				Receipt_Messages.PARTIES_NOTIFIED.getMessage(),
-				FizzConstants.class);
+		if(!active_notifications.isEmpty())
+		{
+			notifyRealTimeServer(active_notifications);
+			log(Logger_State.INFO,
+					Receipt_Messages.PARTIES_NOTIFIED.getMessage(),
+					FizzConstants.class);
+		}
+
 	}
 	
+	private static void notifyRealTimeServer(List<Notice> active_notifications) {
+		
+	}
+
+
+	private static List<String> membersWhoFollowFocus(Idea data, String creator) {
+		List<String> usernames = new ArrayList<String>();
+		
+		for (Focus focus : data.getFocus()) {
+			
+			for (Member member : all_members) {
+			
+				if(!creator.equals(member.getUsername()))
+				{
+					for (Preference preference : memberRepo.findById(member.getId()).get().getPreferences()) {
+						if(preference.getCategory().equals(focus.getCategory()))
+						{
+							usernames.add(member.getUsername());
+						}
+				}
+			} 
+		}
+	}
+		
+		return usernames;
+	}
+
+
 	public static  void addMember(Member member)
 	{
-		members.add(member);
+		all_members.add(member);
 	}
+	
+	public static void checkNotifications(String username)
+	{
+		List<Notice> notifications = new ArrayList<>();
+		for (Notice notice : pending_notifications) {
+			if(notice.username.equals(username))
+			{
+				notifications.add(notice);
+			}
+		}
+		notifyRealTimeServer(notifications);
+	}
+	
 	
 	@Autowired
 	public FizzConstants(MemberRepository memberRepository)
 	{
-		 Iterator<Member> it = memberRepository.findAll().iterator();
+		memberRepo = memberRepository;
+		 Iterator<Member> it = memberRepo.findAll().iterator();
 		 
 		 while (it.hasNext()) {
-			members.add(it.next());	
+			all_members.add(it.next());	
 		}
-		 return;
+		 
 	}
 	
 

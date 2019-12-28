@@ -34,7 +34,7 @@ public class TestConstants {
 	public Member david_reed;
 	public MemberJson david_reed_json;
 	
-	public Focus sam_idea_focus = new  Focus(Category.MISC);
+	public Focus sam_idea_focus = new  Focus(Category.MOVIES);
 	public Idea sam_idea= new Idea("Cats On Water", "cats need sufboards please dont be a bitch about it");
 	public Retort david_retort;
 	public Ticket sam_idea_ticket=new Ticket();

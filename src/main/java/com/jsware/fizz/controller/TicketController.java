@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsware.fizz.constants.FizzConstants;
 import com.jsware.fizz.constants.FizzConstants.Logger_State;
+import com.jsware.fizz.constants.FizzConstants.Notification_Network_Actions;
 import com.jsware.fizz.constants.FizzConstants.Vote_Type;
 import com.jsware.fizz.exceptions.FizzException;
 import com.jsware.fizz.model.idea.Focus;
@@ -95,7 +96,8 @@ public class TicketController {
 				foc.setIdea(idea);
 				focRepo.save(foc);
 			}
-							
+			
+			FizzConstants.notifyParties(idea, Notification_Network_Actions.FOCUS,ticket.getCustomer());
 			FizzConstants.log(
 					Logger_State.INFO, 
 					FizzConstants.Receipt_Messages.CREATED_IDEA.getMessage(),

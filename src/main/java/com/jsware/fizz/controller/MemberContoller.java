@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsware.fizz.constants.FizzConstants;
+import com.jsware.fizz.constants.FizzConstants.Category;
 import com.jsware.fizz.constants.FizzConstants.Error_Messages;
 import com.jsware.fizz.constants.FizzConstants.Logger_State;
 import com.jsware.fizz.exceptions.FizzException;
@@ -57,7 +58,10 @@ public class MemberContoller {
 		{
 			if(!memRepo.existByUsername(member.getUsername()))
 			{
-				member =memRepo.save(member);
+				member = memRepo.save(member);
+//				Preference test = new Preference();
+//				test.setCategory(Category.MOVIES);
+//				member.getPreferences().add(test);
 				FizzConstants.addMember(member);
 				if(member.getPreferences()!=null)
 				{
@@ -175,6 +179,7 @@ public class MemberContoller {
 			{
 				throw new FizzException(FizzConstants.Error_Messages.LOGIN_X.getMessage());
 			}
+			FizzConstants.checkNotifications(ticket.getCustomer());
 			FizzConstants.log(
 					Logger_State.INFO, 
 					FizzConstants.Receipt_Messages.LOGIN_SUCCESSFUL.getMessage(),

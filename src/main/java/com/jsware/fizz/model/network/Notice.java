@@ -1,9 +1,14 @@
 package com.jsware.fizz.model.network;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Notice {
-	List<String> usernames = new ArrayList<String>();
-	Object data;
+	public String username;
+	public Object data;
+	public Notice(String username, Object data) {
+		super();
+		this.username = username;
+		this.data = data;
+	}
+	
+	
 }
