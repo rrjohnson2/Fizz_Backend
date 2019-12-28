@@ -3,13 +3,18 @@ package com.jsware.fizz.constants;
 
 
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-
-
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsware.fizz.model.idea.Focus;
 import com.jsware.fizz.model.idea.Idea;
 import com.jsware.fizz.model.member.Member;
@@ -38,9 +44,13 @@ public class FizzConstants {
 	private static MemberRepository memberRepo;
 	
 	private static List<Notice> pending_notifications= new ArrayList<>();
-			
 
+	private static String realTimeServerURL = "http://localhost:3000/";
+			
+	private final static CloseableHttpClient http_client = HttpClients.createDefault();
 	public static final int  suggestCount = 5;
+	
+	private static   ObjectMapper mapper;
 	
 	public static enum Logger_State
 	{
@@ -113,7 +123,8 @@ public class FizzConstants {
 		RATING_X("RATING FAILED"),
 		COMMENTED_X("COMMENT FAILED"),
 		LOGIN_X("LOGIN FAILED"),
-		UPDATE_X("UPDATE FAILED ");
+		UPDATE_X("UPDATE FAILED "),
+		PARTIES_NOTIFIED_X("COULD NOT SEND NOTIFICATION");
 		
 		
 		private String message;
@@ -217,7 +228,30 @@ public class FizzConstants {
 	}
 	
 	private static void notifyRealTimeServer(List<Notice> active_notifications) {
+       new Thread(new Runnable() {
 		
+		@Override
+		public void run() {
+			 try {
+		        	HttpPost post = new HttpPost(realTimeServerURL +"notifications");
+		        	
+		            StringBuilder json = new StringBuilder();
+		            json.append("{");
+		            json.append("\"notifications\":" + mapper.writeValueAsString(active_notifications));
+		            json.append("}");
+		            
+		            post.setEntity(new StringEntity(json.toString()));
+		            post.setHeader("Accept", "application/json");
+		            post.setHeader("Content-type", "application/json");
+
+		            http_client.execute(post);
+		           } catch (Exception e) {
+		   			log(Logger_State.ERROR,
+							Error_Messages.PARTIES_NOTIFIED_X.getMessage(),
+							FizzConstants.class);
+				}
+		}
+       			}).start();
 	}
 
 
@@ -258,14 +292,15 @@ public class FizzConstants {
 				notifications.add(notice);
 			}
 		}
-		notifyRealTimeServer(notifications);
+		if(!notifications.isEmpty())notifyRealTimeServer(notifications);
 	}
 	
 	
 	@Autowired
-	public FizzConstants(MemberRepository memberRepository)
+	public FizzConstants(MemberRepository memberRepository, ObjectMapper mapper)
 	{
 		memberRepo = memberRepository;
+		this.mapper = mapper;
 		 Iterator<Member> it = memberRepo.findAll().iterator();
 		 
 		 while (it.hasNext()) {
