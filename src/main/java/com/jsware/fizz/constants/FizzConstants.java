@@ -213,9 +213,8 @@ public class FizzConstants {
 			{
 				active_notifications.add(notice);
 			}
-			else {
-				pending_notifications.add(notice);
-			}
+			pending_notifications.add(notice);
+
 		}
 		if(!active_notifications.isEmpty())
 		{
