@@ -179,7 +179,6 @@ public class MemberContoller {
 			{
 				throw new FizzException(FizzConstants.Error_Messages.LOGIN_X.getMessage());
 			}
-			FizzConstants.checkNotifications(ticket.getCustomer());
 			FizzConstants.log(
 					Logger_State.INFO, 
 					FizzConstants.Receipt_Messages.LOGIN_SUCCESSFUL.getMessage(),

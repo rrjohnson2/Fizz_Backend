@@ -177,7 +177,7 @@ public class FizzConstants {
 	public void clientActivated(@RequestBody Client client )
 	{
 		activeClients.put(client.getUsername(), client.getKey());
-		
+		checkNotifications(client.getUsername(),client.getKey());
 		log(Logger_State.INFO,
 				Receipt_Messages.CLIENT_ADDED.getMessage(),
 				FizzConstants.class);
@@ -208,9 +208,10 @@ public class FizzConstants {
 
 		}
 		for (String username : affected_usernames) {
-			Notice notice = new Notice(username, data);
+			Notice notice = new Notice(username, data,-1);
 			if(activeClients.containsKey(username))
 			{
+				notice.setSocket_key(activeClients.get(username));
 				active_notifications.add(notice);
 			}
 			pending_notifications.add(notice);
@@ -282,12 +283,13 @@ public class FizzConstants {
 		all_members.add(member);
 	}
 	
-	public static void checkNotifications(String username)
+	public static void checkNotifications(String username, int socket_key)
 	{
 		List<Notice> notifications = new ArrayList<>();
 		for (Notice notice : pending_notifications) {
 			if(notice.username.equals(username))
 			{
+				notice.setSocket_key(socket_key);
 				notifications.add(notice);
 			}
 		}
