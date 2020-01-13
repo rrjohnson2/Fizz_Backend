@@ -208,10 +208,10 @@ public class FizzConstants {
 
 		}
 		for (String username : affected_usernames) {
-			Notice notice = new Notice(username, data,-1);
+			Notice notice = new Notice(username, data,-1,action);
 			if(activeClients.containsKey(username))
 			{
-				notice.setSocket_key(activeClients.get(username));
+				notice.socket_key=activeClients.get(username);
 				active_notifications.add(notice);
 			}
 			pending_notifications.add(notice);
@@ -289,7 +289,7 @@ public class FizzConstants {
 		for (Notice notice : pending_notifications) {
 			if(notice.username.equals(username))
 			{
-				notice.setSocket_key(socket_key);
+				notice.socket_key=socket_key;
 				notifications.add(notice);
 			}
 		}
