@@ -23,4 +23,4 @@ insert into rating (id,vote,creator_id,idea_id) values
 (5001,'UP',102,2002);
 
 insert into message (id,content,timestamp,creator_id,retort_id) values
-(4001,'Thanks you for the feedback','2019-12-28 14:56:35',102,4001);
+(4001,'Thanks you for the feedback','2019-12-28 14:56:35',152,4001);
