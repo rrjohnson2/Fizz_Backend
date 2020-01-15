@@ -1,6 +1,8 @@
 package com.jsware.fizz.model.rating;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,6 +22,7 @@ public class Rating {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="rating_seq")
 	private long id;
 	
+	@Enumerated(EnumType.STRING)
 	private Vote_Type vote;
 	
 	@ManyToOne

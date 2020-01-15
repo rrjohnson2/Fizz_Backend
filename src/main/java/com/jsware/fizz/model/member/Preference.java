@@ -26,7 +26,7 @@ public class Preference {
 	private long id;
 	
 	@Enumerated(EnumType.STRING)
-	@Column( unique = true ,length=10)
+	@Column(length=10)/// this is here becuase the unquie constaint needs the length to be less than 15
 	private Category category;
 	
 	private int weight;
