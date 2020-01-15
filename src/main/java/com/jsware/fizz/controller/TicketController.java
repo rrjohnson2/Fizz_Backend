@@ -3,6 +3,8 @@ package com.jsware.fizz.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,7 @@ import com.jsware.fizz.model.idea.Idea;
 import com.jsware.fizz.model.interactions.Receipt;
 import com.jsware.fizz.model.interactions.Ticket;
 import com.jsware.fizz.model.member.Member;
+import com.jsware.fizz.model.member.Preference;
 import com.jsware.fizz.model.rating.Rating;
 import com.jsware.fizz.model.retort.Message;
 import com.jsware.fizz.model.retort.Retort;
@@ -239,6 +242,43 @@ public class TicketController {
 			FizzConstants.log(Logger_State.ERROR, e.getMessage(), TicketController.class);
 			throw new FizzException(FizzConstants.Error_Messages.COMMENTED_X.getMessage());
 		}
+	}
+	
+	@RequestMapping(value="/getIdeas", method=RequestMethod.POST)
+	@ResponseBody
+	public Receipt getIdeas(@RequestBody Preference[] preferences) throws JsonParseException, JsonMappingException, JsonProcessingException, IOException, FizzException
+	{
+		
+		try {
+			List<Idea> ideas = new ArrayList<Idea>(); 
+				
+			Iterator idea_iter  = ideaRepo.findAll().iterator();
+			
+			while (idea_iter.hasNext())
+			{
+				ideas.add((Idea)idea_iter.next());
+				
+			}
+			
+			
+		
+			FizzConstants.log(
+					Logger_State.INFO, 
+					FizzConstants.Receipt_Messages.IDEA_RETURN.getMessage(),
+					MemberContoller.class);
+			return new Receipt(
+					FizzConstants.Receipt_Messages.IDEA_RETURN.getMessage(),
+					sortByPreference(ideas,preferences));
+			
+		} catch (Exception e) {
+			FizzConstants.log(Logger_State.ERROR, e.getMessage(), TicketController.class);
+			throw new FizzException(FizzConstants.Error_Messages.COMMENTED_X.getMessage());
+		}
+	}
+
+	private List<Idea> sortByPreference(List<Idea> ideas, Preference[] preferences) {
+		// TODO Auto-generated method stub
+		return ideas;
 	}
 	
 
