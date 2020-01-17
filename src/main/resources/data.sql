@@ -1,6 +1,6 @@
 insert into member (id, email, first_name, last_name, salt, salty_password, username) values
-(102, 'email@email.com', 'Roice', 'Johnson', 'HeA9ekya8FQ7TlQSs9sYgmNTgxfOwN+UJvht/P0Sri8=', 'HeA9ekya8FQ7TlQSs9sYgmNTgxfOwN+UJvht/P0Sri8=HpeaAs9sekya8FQ7TlQSs9sYgmNTgxfOwN+UJvht/P0Sri8=HeA9ekya8FQ7TlQSs9sYgmNTgxfOwN+UJvht/P0Sri8=', 'appleseed'),
-(152, 'k@j.com', 'Grace', 'Johnson', 'ut5rJRo+0dRmuWJlgigPinJyq3y7lD0lPwzaCT/Tp78=', 'ut5rJRo+0dRmuWJlgigPinJyq3y7lD0lPwzaCT/Tp78=upta5srsJRo+0dRmuWJlgigPinJyq3y7lD0lPwzaCT/Tp78=ut5rJRo+0dRmuWJlgigPinJyq3y7lD0lPwzaCT/Tp78=', 'pomseed');
+(102, 'email@email.com', 'Roice', 'Johnson', 'HeA9ekya8FQ7TlQSs9sYgmNTgxfOwN+UJvht/P0Sri8=', 'HeA9ekya8FQ7TlQSs9sYgmNTgxfOwN+UJvht/P0Sri8=HpeaAs9sekya8FQ7TlQSs9sYgmNTgxfOwN+UJvht/P0Sri8=HeA9ekya8FQ7TlQSs9sYgmNTgxfOwN+UJvht/P0Sri8=', 'royboy'),
+(152, 'k@j.com', 'Grace', 'Johnson', 'ut5rJRo+0dRmuWJlgigPinJyq3y7lD0lPwzaCT/Tp78=', 'ut5rJRo+0dRmuWJlgigPinJyq3y7lD0lPwzaCT/Tp78=upta5srsJRo+0dRmuWJlgigPinJyq3y7lD0lPwzaCT/Tp78=ut5rJRo+0dRmuWJlgigPinJyq3y7lD0lPwzaCT/Tp78=', 'Gjohson');
 
 insert into preference (id, category, weight, owner_id) values
 (1001, 'MOVIES', 0, 102),

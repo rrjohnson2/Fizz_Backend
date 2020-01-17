@@ -250,7 +250,7 @@ public class FizzConstants {
 			}
 		}
 		
-		usernames.add(idea_creator);
+		if(!creator.equals(idea_creator))usernames.add(idea_creator);
 		
 		return usernames;
 	}
@@ -258,14 +258,16 @@ public class FizzConstants {
 
 	private static List<String> membersWhoFollowFocus(Retort data, String creator) {
 		List<String> usernames = new ArrayList<String>();
-		usernames.add(data.getIdea().getCreator().getUsername());
+		String idea_creator = data.getIdea().getCreator().getUsername();
+		if(!creator.equals(idea_creator))usernames.add(idea_creator);
 		return usernames;
 	}
 
 
 	private static List<String> membersWhoFollowFocus(Rating data, String creator) {
 		List<String> usernames = new ArrayList<String>();
-		usernames.add(data.getIdea().getCreator().getUsername());
+		String idea_creator = data.getIdea().getCreator().getUsername();
+		if(!creator.equals(idea_creator))usernames.add(idea_creator);
 		return usernames;
 	}
 

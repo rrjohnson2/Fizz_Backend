@@ -132,7 +132,7 @@ public class Idea {
 		this.retorts = resorts;
 	}
 
-	public List<Rating> getRating() {
+	public List<Rating> getRatings() {
 		return ratings;
 	}
 	

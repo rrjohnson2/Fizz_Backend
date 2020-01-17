@@ -32,6 +32,7 @@ public class Notice {
 		{
 			Message msg  = (Message) data;
 			retort_id = (int) msg.getRetort().getId();
+			idea_id = (int) msg.getRetort().getIdea().getId(); 
 		}
 	}
 }
