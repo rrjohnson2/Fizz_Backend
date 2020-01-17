@@ -1,9 +1,5 @@
 package com.jsware.fizz.constants;
 
-
-
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,6 +27,9 @@ import com.jsware.fizz.model.member.Member;
 import com.jsware.fizz.model.member.Preference;
 import com.jsware.fizz.model.network.Client;
 import com.jsware.fizz.model.network.Notice;
+import com.jsware.fizz.model.rating.Rating;
+import com.jsware.fizz.model.retort.Message;
+import com.jsware.fizz.model.retort.Retort;
 import com.jsware.fizz.repository.MemberRepository;
 
 @Controller
@@ -202,6 +201,16 @@ public class FizzConstants {
 		case FOCUS:
 			 affected_usernames = membersWhoFollowFocus((Idea)data,creator);
 			break;
+		case RATING:
+			 affected_usernames = membersWhoFollowFocus((Rating)data,creator);
+			break;
+		case RETORT:
+			affected_usernames = membersWhoFollowFocus((Retort)data,creator);
+			break;
+		case COMMENT:
+			affected_usernames = membersWhoFollowFocus((Message)data,creator);
+			break;
+			
 
 		default:
 			break;
@@ -209,13 +218,12 @@ public class FizzConstants {
 
 		}
 		for (String username : affected_usernames) {
-			Notice notice = new Notice(username, data,-1,action);
 			if(activeClients.containsKey(username))
 			{
-				notice.socket_key=activeClients.get(username);
+				Notice notice = new Notice(username, data,activeClients.get(username),action);
 				active_notifications.add(notice);
 			}
-			pending_notifications.add(notice);
+			pending_notifications.add(new Notice(username, data,-1,action));
 
 		}
 		if(!active_notifications.isEmpty())
@@ -228,6 +236,40 @@ public class FizzConstants {
 
 	}
 	
+	private static List<String> membersWhoFollowFocus(Message data, String creator) {
+		List<String> usernames = new ArrayList<String>();
+		
+		String idea_creator = data.getRetort().getIdea().getCreator().getUsername();
+		String retort_creator = data.getRetort().getCreator().getUsername();
+		
+		for (Message msg : data.getRetort().getMessages()) {
+			String username = msg.getCreator().getUsername();
+			if(!username.equals(creator) && !username.equals(idea_creator) && !username.equals(retort_creator))
+			{
+				usernames.add(username);
+			}
+		}
+		
+		usernames.add(idea_creator);
+		
+		return usernames;
+	}
+
+
+	private static List<String> membersWhoFollowFocus(Retort data, String creator) {
+		List<String> usernames = new ArrayList<String>();
+		usernames.add(data.getIdea().getCreator().getUsername());
+		return usernames;
+	}
+
+
+	private static List<String> membersWhoFollowFocus(Rating data, String creator) {
+		List<String> usernames = new ArrayList<String>();
+		usernames.add(data.getIdea().getCreator().getUsername());
+		return usernames;
+	}
+
+
 	private static void notifyRealTimeServer(List<Notice> active_notifications) {
        new Thread(new Runnable() {
 		

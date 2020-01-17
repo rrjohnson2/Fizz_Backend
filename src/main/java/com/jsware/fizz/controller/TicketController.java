@@ -142,6 +142,8 @@ public class TicketController {
 			
 			retort = retRepo.save(retort);
 			
+			FizzConstants.notifyParties(retort, Notification_Network_Actions.RETORT,ticket.getCustomer());
+			
 			FizzConstants.log(
 					Logger_State.INFO, 
 					FizzConstants.Receipt_Messages.CREATED_RETORT.getMessage(),
@@ -191,6 +193,8 @@ public class TicketController {
 			rating.setVote(vote);
 			
 			rating = ratRepo.save(rating);
+			
+			FizzConstants.notifyParties(rating, Notification_Network_Actions.RATING,ticket.getCustomer());
 		
 			FizzConstants.log(
 					Logger_State.INFO, 
@@ -230,6 +234,7 @@ public class TicketController {
 		
 			message = mesRepo.save(message);
 		
+			FizzConstants.notifyParties(message, Notification_Network_Actions.COMMENT,ticket.getCustomer());
 			FizzConstants.log(
 					Logger_State.INFO, 
 					FizzConstants.Receipt_Messages.COMMENTED.getMessage(),

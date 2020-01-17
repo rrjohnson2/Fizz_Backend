@@ -27,7 +27,8 @@ public class Message {
 	@ManyToOne
 	@JsonIgnore
 	private Retort retort;
-	
+
+
 	@ManyToOne
 	private Member creator;
 	
@@ -67,6 +68,11 @@ public class Message {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	
+	public Retort getRetort() {
+		return retort;
 	}
 	
 
