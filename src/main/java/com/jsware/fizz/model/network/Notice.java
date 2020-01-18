@@ -11,6 +11,7 @@ public class Notice {
 	public int socket_key;
 	public int idea_id;
 	public int retort_id;
+	public boolean checked =false;
 	public  Notification_Network_Actions action;
 	public Notice(String username, Object data,int socket_key, Notification_Network_Actions action) {
 		super();
