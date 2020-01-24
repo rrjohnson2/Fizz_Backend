@@ -94,7 +94,7 @@ public class TicketController {
 			
 			idea = ideaRepo.save(idea);
 			
-			for(Focus foc : idea.getFocus())
+			for(Focus foc : idea.getFocuses())
 			{
 				foc.setIdea(idea);
 				focRepo.save(foc);

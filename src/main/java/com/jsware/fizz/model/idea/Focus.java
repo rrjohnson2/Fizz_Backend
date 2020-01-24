@@ -11,6 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jsware.fizz.constants.FizzConstants.Category;
 
@@ -24,6 +27,7 @@ public class Focus {
 	
 	@ManyToOne()
 	@JsonIgnore
+    //@OnDelete(action = OnDeleteAction.CASCADE)
 	private Idea idea;
 
 	@Enumerated(EnumType.STRING)

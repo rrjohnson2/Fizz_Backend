@@ -72,7 +72,7 @@ public class TestConstants {
 		sam_preferences.add(preference_B);
 		sam_bethe= new Member("samsquach","Sam", "Bethe", "sBethe@gmail", sam_preferences);
 		sam_bethe_json= new MemberJson(sam_bethe,sam_password);
-		sam_idea.getFocus().add(sam_idea_focus);
+		sam_idea.getFocuses().add(sam_idea_focus);
 		sam_idea_ticket.setCustomer(sam_bethe.getUsername());
 		sam_idea_ticket.setData(sam_idea);
 	}

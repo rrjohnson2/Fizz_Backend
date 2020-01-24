@@ -95,7 +95,10 @@ public class FizzConstants {
 		CLIENT_ADDED("CLIENT JOINED REAL TIME SERVER"),
 		CLIENT_REMOVED("CLIENT REMOVED REAL TIME SERVER"),
 		PARTIES_NOTIFIED("NOTIFIED REQUESTED PARTIES"), 
-		IDEA_RETURN("IDEAS RETYRNED TO USER");
+		IDEA_RETURN("IDEAS RETYRNED TO USER"), 
+		DELETED_IDEA("DELETED IDEA SUCCESSFUL"),
+		UPDATE_IDEA("IDEA UPDATED"), 
+		UPDATE_RETORT("RETORT UPDATED"), DELETED_RETORT("DELETED RETORT");
 		
 		
 		private String message;
@@ -124,7 +127,11 @@ public class FizzConstants {
 		COMMENTED_X("COMMENT FAILED"),
 		LOGIN_X("LOGIN FAILED"),
 		UPDATE_X("UPDATE FAILED "),
-		PARTIES_NOTIFIED_X("COULD NOT SEND NOTIFICATION");
+		PARTIES_NOTIFIED_X("COULD NOT SEND NOTIFICATION"), 
+		DELETED_IDEA_X("DELETION FAILED IDEA"),
+		UNAUTHORIZED_ACTION("USER IS NOT AUTHORIZED TO TAKE THIS ACTION"),
+		UPDATE_IDEA_X("UPDATE IDEA FAILED"), UPDATE_RETORT_X("UPDATE FAILED RETORT"), DELETED_RETORT_X("RETORT DELETION FAILED");
+		
 		
 		
 		private String message;
@@ -304,7 +311,7 @@ public class FizzConstants {
 	private static List<String> membersWhoFollowFocus(Idea data, String creator) {
 		List<String> usernames = new ArrayList<String>();
 		
-		for (Focus focus : data.getFocus()) {
+		for (Focus focus : data.getFocuses()) {
 			
 			for (Member member : all_members) {
 			

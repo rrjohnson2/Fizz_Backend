@@ -83,7 +83,7 @@ public class Member {
 	@JsonIgnore
 	private String saltyPassword;
 	
-	@OneToMany(mappedBy="creator")
+	@OneToMany(mappedBy="creator",cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private List<Idea> created_ideas = new ArrayList<Idea>();
 	

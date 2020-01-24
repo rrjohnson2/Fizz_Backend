@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,15 +35,15 @@ public class Idea {
 	
 	private Date timestamp = new Date();
 	
-	@OneToMany(mappedBy="idea")
-	private List<Focus> focus = new ArrayList<Focus>();
+	@OneToMany(mappedBy="idea",cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Focus> focuses = new ArrayList<Focus>();
 	
 	private String title, description;
 	
-	@OneToMany(mappedBy="idea")
+	@OneToMany(mappedBy="idea",cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Retort> retorts =  new ArrayList<Retort>();
 	
-	@OneToMany(mappedBy="idea")
+	@OneToMany(mappedBy="idea",cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Rating> ratings = new ArrayList<Rating>();
 	
 	public Idea() {}
@@ -76,12 +77,12 @@ public class Idea {
 	}
 	
 
-	public List<Focus> getFocus() {
-		return focus;
+	public List<Focus> getFocuses() {
+		return focuses;
 	}
 
-	public void setFocus(List<Focus> focus) {
-		this.focus = focus;
+	public void setFocuses(List<Focus> focus) {
+		this.focuses = focus;
 	}
 
 	public long getId() {
@@ -158,6 +159,46 @@ public class Idea {
 			}
 		}
 		return count;
+	}
+
+	public List<Focus> update(Idea idea) {
+		
+		/*
+		 *  This clunky method is a result of this.fouces not being able to be set by normal means
+		 *  
+		 *  meaning to update a list relationship on the parent the list items have to be deleted and added back or jpa bitches 
+		 */
+		
+		List<Focus> unused_focus = new ArrayList<Focus>();
+		
+		for (Focus focus : focuses) {
+		
+			if(!idea.focuses.contains(focus))
+			{
+				unused_focus.add(focus);
+			}
+			
+		}
+		
+		for (Focus focus : idea.focuses) {
+			if(!this.focuses.contains(focus)) {
+				focus.setIdea(this);
+				focuses.add(focus);
+			}
+		}
+		
+		for (Focus focus : unused_focus) {
+			this.focuses.remove(focus);
+		}
+		
+		
+		description = idea.description;
+		title=idea.title;
+		
+		return unused_focus;
+		
+		
+		
 	}
 
 	
