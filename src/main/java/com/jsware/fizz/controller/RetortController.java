@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,12 +24,17 @@ import com.jsware.fizz.model.idea.Idea;
 import com.jsware.fizz.model.interactions.Receipt;
 import com.jsware.fizz.model.interactions.Ticket;
 import com.jsware.fizz.model.retort.Retort;
+import com.jsware.fizz.repository.MessageRepository;
 import com.jsware.fizz.repository.RetortRepository;
 
+@Controller
 public class RetortController {
 	
 	@Autowired
 	private RetortRepository retortRepo;
+	
+	@Autowired
+	private MessageRepository msgRepo;
 	
 	private ObjectMapper mapper;
 	
@@ -46,10 +52,10 @@ public class RetortController {
 	{
 		try
 		{
-			
-			validateAccess(
+			Retort retort = validateAccess(
 					mapper.readValue(mapper.writeValueAsString(ticket.getData()),Retort.class),
 					ticket.getCustomer());
+			retortRepo.delete(retort);
 			
 			FizzConstants.log(
 					Logger_State.INFO, 
@@ -72,9 +78,14 @@ public class RetortController {
 	{
 		try
 		{
-			Retort retort = validateAccess(
-					mapper.readValue(mapper.writeValueAsString(ticket.getData()),Retort.class),
+			Retort retort = mapper.readValue(mapper.writeValueAsString(ticket.getData()),Retort.class);
+			Retort RETORT = validateAccess(
+					retort,
 					ticket.getCustomer());
+			
+			RETORT.setContent(retort.getContent());
+			
+			retortRepo.save(RETORT);
 			
 			FizzConstants.log(
 					Logger_State.INFO, 

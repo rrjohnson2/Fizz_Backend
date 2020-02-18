@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,7 +39,7 @@ public class Retort {
 	@Lob
 	private String content;
 	
-	@OneToMany(mappedBy="retort")
+	@OneToMany(mappedBy="retort",cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Message> messages = new ArrayList<Message>();
 	
 	private Date timestamp = new Date();

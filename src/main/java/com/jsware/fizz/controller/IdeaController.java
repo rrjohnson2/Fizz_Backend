@@ -29,6 +29,7 @@ import com.jsware.fizz.model.interactions.Ticket;
 import com.jsware.fizz.model.member.Member;
 import com.jsware.fizz.repository.FocusRepository;
 import com.jsware.fizz.repository.IdeaRepository;
+import com.jsware.fizz.repository.RatingRepository;
 
 @Controller
 public class IdeaController {
@@ -38,6 +39,9 @@ public class IdeaController {
 	
 	@Autowired
 	private FocusRepository focusRepo;
+	
+	@Autowired
+	private RatingRepository ratingRepository;
 	
 	private ObjectMapper mapper;
 	
@@ -146,6 +150,11 @@ public class IdeaController {
 			throw new FizzException(FizzConstants.Error_Messages.UPDATE_IDEA_X.getMessage());
 		}
 	}
+	
+	
+	
+	
+
 
 
 	private Idea validateAccess(Idea idea, String username) throws JsonProcessingException, Exception {
