@@ -60,9 +60,31 @@ public class Focus {
 		return idea;
 	}
 
-	public void setIdea(Idea idea) {
+	public Focus setIdea(Idea idea) {
 		this.idea = idea;
+		return this;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Focus other = (Focus) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 	
 
+	
 }

@@ -129,7 +129,7 @@ public class IdeaController {
 					idea,
 					ticket.getCustomer());
 			
-			List<Focus> unsueed =  IDEA.update(idea);
+			IDEA.update(idea);
 			ideaRepo.save(IDEA);
 			
 			FizzConstants.log(

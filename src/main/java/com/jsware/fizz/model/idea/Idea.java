@@ -4,6 +4,7 @@ package com.jsware.fizz.model.idea;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -161,41 +162,15 @@ public class Idea {
 		return count;
 	}
 
-	public List<Focus> update(Idea idea) {
-		
-		/*
-		 *  This clunky method is a result of this.fouces not being able to be set by normal means
-		 *  
-		 *  meaning to update a list relationship on the parent the list items have to be deleted and added back or jpa bitches 
-		 */
-		
-		List<Focus> unused_focus = new ArrayList<Focus>();
-		
-		for (Focus focus : focuses) {
-		
-			if(!idea.focuses.contains(focus))
-			{
-				unused_focus.add(focus);
-			}
-			
-		}
-		
-		for (Focus focus : idea.focuses) {
-			if(!this.focuses.contains(focus)) {
-				focus.setIdea(this);
-				focuses.add(focus);
-			}
-		}
-		
-		for (Focus focus : unused_focus) {
-			this.focuses.remove(focus);
-		}
-		
+	public void update(Idea idea) {
+		focuses.clear();
+		focuses.addAll(
+				idea.focuses.stream()
+					.map(f -> f.setIdea(this))
+						.collect(Collectors.toList()));
 		
 		description = idea.description;
 		title=idea.title;
-		
-		return unused_focus;
 		
 		
 		
