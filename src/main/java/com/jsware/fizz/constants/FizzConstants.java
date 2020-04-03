@@ -59,8 +59,11 @@ public class FizzConstants {
 	
 	public static enum Vote_Type
 	{
-		UP,
-		DOWN
+		Bad,
+		Poor,
+		So_So,
+		Fair,
+		Good
 	}
 	
 	public static enum Category{
@@ -177,6 +180,19 @@ public class FizzConstants {
 			categories.add(cat.toString());
 		}
 		return categories;
+	}
+	
+	@RequestMapping(value="/VoteTypes",method=RequestMethod.GET)
+	@ResponseBody
+	public List<String> VoteTypes()
+	{
+		List<String> ratings=new ArrayList<String>();
+		
+		for(Vote_Type vote : Vote_Type.values())
+		{
+			ratings.add(vote.toString());
+		}
+		return ratings;
 	}
 	
 	@RequestMapping(value="/clientActivated",method=RequestMethod.POST)

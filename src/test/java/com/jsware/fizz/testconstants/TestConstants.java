@@ -61,7 +61,7 @@ public class TestConstants {
 		david_retort_ticket.setData(david_retort_data);
 		david_rate_ticket.setCustomer(david_reed.getUsername());
 		david_rating_data.put("idea", sam_idea.getId());
-		david_rating_data.put("vote", Vote_Type.UP);
+		david_rating_data.put("vote", Vote_Type.Bad);
 		david_rate_ticket.setData(david_rating_data);
 		
 		

@@ -20,7 +20,7 @@ insert into retort (id,content,timestamp,creator,idea) values
 (4001,'some of the pit holes people fall in to are blah blah blah so watch out for those, other than that good idea','2019-12-28 14:50:02',102,2002);
 
 insert into rating (id,vote,creator_id,idea_id) values
-(5001,'UP',102,2002);
+(5001,'Bad',102,2002);
 
 insert into message (id,content,timestamp,creator_id,retort_id) values
 (4001,'Thanks you for the feedback','2019-12-28 14:56:35',152,4001);

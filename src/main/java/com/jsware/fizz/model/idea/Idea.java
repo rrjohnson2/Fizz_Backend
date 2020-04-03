@@ -138,15 +138,28 @@ public class Idea {
 		return ratings;
 	}
 	
-	public int getUpVotes()
+	public int getBadVotes()
 	{
-		return countVotes(Vote_Type.UP);
+		return countVotes(Vote_Type.Bad);
 	}
 	
-	public int getDownVotes()
+	public int getPoorVotes()
 	{
-		return countVotes(Vote_Type.DOWN);	
+		return countVotes(Vote_Type.Poor);
 	}
+	public int getSo_SoVotes()
+	{
+		return countVotes(Vote_Type.So_So);
+	}
+	public int getFairVotes()
+	{
+		return countVotes(Vote_Type.Fair);
+	}
+	public int getGoodVotes()
+	{
+		return countVotes(Vote_Type.Good);
+	}
+	
 
 	private int countVotes(Vote_Type vote)
 	{
