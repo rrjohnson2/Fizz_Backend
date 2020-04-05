@@ -194,37 +194,68 @@ public class MemberContoller {
 		}
 	}
 	
-	@RequestMapping(value="/updateProfile",method=RequestMethod.POST)
+//	@RequestMapping(value="/updateProfile",method=RequestMethod.POST)
+//	@ResponseBody
+//	public Receipt updateProfile(@RequestBody Ticket ticket) throws FizzException
+//	{
+//		try
+//		{
+//			Member member = memRepo.findByUsername(ticket.getCustomer());
+//			Profile profile = null;
+//			HashMap<String, Object> data = mapper.readValue(
+// 					mapper.writeValueAsString(ticket.getData()),
+//					HashMap.class);
+//			
+//			String password= (String) data.get("old_password");
+//			
+//			if(!member.AccessGranted(password))
+//			{
+//				throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
+//			}
+//			
+//			this.mapper.disable(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES);
+//			
+//			HashMap update = mapper.readValue(
+// 					mapper.writeValueAsString(data.get("member")),
+//					HashMap.class);
+//			
+//			member.update(update);
+//			
+//			member= memRepo.save(member);
+//			
+//			profile= (Profile) getProfile(member.getUsername()).getData();
+//			
+//			
+//			
+//			FizzConstants.log(
+//					Logger_State.INFO, 
+//					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
+//					MemberContoller.class);
+//			return new Receipt(
+//					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
+//				profile);
+//		}
+//		catch(Exception e)
+//		{
+//			FizzConstants.log(Logger_State.ERROR, e.getMessage(), MemberContoller.class);
+//			throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
+//		}
+//	}
+//	
+	
+	@RequestMapping(value="/updatePicture",method=RequestMethod.POST)
 	@ResponseBody
-	public Receipt updateProfile(@RequestBody Ticket ticket) throws FizzException
+	public Receipt update(@RequestBody Ticket ticket) throws FizzException
 	{
 		try
 		{
 			Member member = memRepo.findByUsername(ticket.getCustomer());
-			Profile profile = null;
-			HashMap<String, Object> data = mapper.readValue(
- 					mapper.writeValueAsString(ticket.getData()),
-					HashMap.class);
 			
-			String password= (String) data.get("old_password");
+			String data = mapper.writeValueAsString(ticket.getData()).replace("\"", "");
 			
-			if(!member.AccessGranted(password))
-			{
-				throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
-			}
+			member.setProfilePicture(data);
 			
-			this.mapper.disable(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES);
-			
-			HashMap update = mapper.readValue(
- 					mapper.writeValueAsString(data.get("member")),
-					HashMap.class);
-			
-			member.update(update);
-			
-			member= memRepo.save(member);
-			
-			profile= (Profile) getProfile(member.getUsername()).getData();
-			
+			memRepo.save(member);
 			
 			
 			FizzConstants.log(
@@ -233,7 +264,7 @@ public class MemberContoller {
 					MemberContoller.class);
 			return new Receipt(
 					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
-				profile);
+				null);
 		}
 		catch(Exception e)
 		{

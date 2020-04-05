@@ -73,6 +73,7 @@ public class Member {
 	
 	private String lastName;
 	
+	private String profilePicture;
 	
 	private String email;
 	
@@ -367,6 +368,28 @@ public class Member {
 		}
 		
 		
+	}
+
+
+
+
+
+
+
+
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+
+
+
+
+
+
+
+
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
 	}
 
 

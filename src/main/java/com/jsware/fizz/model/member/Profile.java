@@ -9,6 +9,8 @@ import com.jsware.fizz.model.retort.Retort;
 
 public class Profile {
 	
+	private String profilePicture;
+	
 	private String username;
 	
 	private String firstName;
@@ -37,6 +39,7 @@ public class Profile {
 		this.created_ideas = mem.getCreated_ideas();
 		this.created_retorts = mem.getCreated_retorts();
 		this.created_messages = mem.getCreated_messages();
+		this.setProfilePicture(mem.getProfilePicture());
 	}
 
 	public String getUsername() {
@@ -69,6 +72,14 @@ public class Profile {
 
 	public List<Message> getCreated_messages() {
 		return created_messages;
+	}
+
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
 	}
 	
 	

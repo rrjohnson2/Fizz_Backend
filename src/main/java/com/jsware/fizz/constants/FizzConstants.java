@@ -70,6 +70,12 @@ public class FizzConstants {
 		
 		TECHNOLOGY,
 		MOVIES,
+		ARTS,
+		PHILOSOPHY,
+		RELIGION,
+		SCIENCE,
+		POLITICS,
+		FOOD,
 		MISC;
 		
 	}
