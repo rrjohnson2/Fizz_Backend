@@ -245,7 +245,7 @@ public class MemberContoller {
 	
 	@RequestMapping(value="/updatePicture",method=RequestMethod.POST)
 	@ResponseBody
-	public Receipt update(@RequestBody Ticket ticket) throws FizzException
+	public Receipt picture(@RequestBody Ticket ticket) throws FizzException
 	{
 		try
 		{
@@ -254,6 +254,48 @@ public class MemberContoller {
 			String data = mapper.writeValueAsString(ticket.getData()).replace("\"", "");
 			
 			member.setProfilePicture(data);
+			
+			memRepo.save(member);
+			
+			
+			FizzConstants.log(
+					Logger_State.INFO, 
+					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
+					MemberContoller.class);
+			return new Receipt(
+					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
+				null);
+		}
+		catch(Exception e)
+		{
+			FizzConstants.log(Logger_State.ERROR, e.getMessage(), MemberContoller.class);
+			throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
+		}
+	}
+	
+	@RequestMapping(value="/updateContact",method=RequestMethod.POST)
+	@ResponseBody
+	public Receipt contact(@RequestBody Ticket ticket) throws FizzException
+	{
+		try
+		{
+			Member member = memRepo.findByUsername(ticket.getCustomer());
+			
+			HashMap<String, Object> data = mapper.readValue(
+				mapper.writeValueAsString(ticket.getData()),
+			HashMap.class);
+	
+			String first = (String) data.get("firstName");
+			
+			String last = (String) data.get("lastName");
+			
+			String email = (String) data.get("email");
+			
+			if(first != null) member.setFirstName(first);
+			if(last != null ) member.setLastName(last);
+			if(last != null)  member.setEmail(email);
+			
+			
 			
 			memRepo.save(member);
 			
