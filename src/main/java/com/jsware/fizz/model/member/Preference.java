@@ -82,7 +82,7 @@ public class Preference {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
 		return result;
 	}
 
@@ -95,10 +95,11 @@ public class Preference {
 		if (getClass() != obj.getClass())
 			return false;
 		Preference other = (Preference) obj;
-		if (id != other.id)
+		if (category != other.category)
 			return false;
 		return true;
 	}
+
 	
 	
 	

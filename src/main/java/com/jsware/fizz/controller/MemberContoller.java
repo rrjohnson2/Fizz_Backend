@@ -3,9 +3,11 @@ package com.jsware.fizz.controller;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,9 +61,6 @@ public class MemberContoller {
 			if(!memRepo.existByUsername(member.getUsername()))
 			{
 				member = memRepo.save(member);
-//				Preference test = new Preference();
-//				test.setCategory(Category.MOVIES);
-//				member.getPreferences().add(test);
 				FizzConstants.addMember(member);
 				if(member.getPreferences()!=null)
 				{
@@ -314,6 +313,80 @@ public class MemberContoller {
 			throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
 		}
 	}
+	
+	@RequestMapping(value="/updatePreference",method=RequestMethod.POST)
+	@ResponseBody
+	public Receipt preferences(@RequestBody Ticket ticket) throws FizzException
+	{
+		try
+		{
+			Member member = memRepo.findByUsername(ticket.getCustomer());
+			
+			Preference[] data = mapper.readValue(
+ 					mapper.writeValueAsString(ticket.getData()),
+					Preference[].class);
+			
+		
+			updatePreferences(member,Arrays.asList(data));
+			
+			
+			FizzConstants.log(
+					Logger_State.INFO, 
+					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
+					MemberContoller.class);
+			return new Receipt(
+					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
+				member.getPreferences());
+		}
+		catch(Exception e)
+		{
+			FizzConstants.log(Logger_State.ERROR, e.getMessage(), MemberContoller.class);
+			throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
+		}
+	}
+
+	private void updatePreferences(Member member, List<Preference> list) {
+		
+		HashMap<Preference, Boolean> isNew = new HashMap<>();
+		List<Preference> og = member.getPreferences();
+		int i = 0;
+		int larger = og.size() < list.size()? list.size(): og.size();
+		while(i <larger)
+		{
+			Preference nue = i <list.size() ? list.get(i): null;
+			Preference old = i< og.size() ? og.get(i): null;
+			
+			helper(isNew, nue,true);
+			helper(isNew, old,false);
+			i++;
+		}
+		
+		for(Preference pre: isNew.keySet())
+		{
+			if(isNew.get(pre))
+			{
+				pre.setOwner(member);
+				prefRepo.save(pre);
+			}
+			else prefRepo.delete(pre);
+		}
+			
+	}
+
+	private void helper(HashMap<Preference, Boolean> isNew, Preference pre,boolean nue) {
+		
+		if(pre == null) return;
+		
+		if(!isNew.containsKey(pre))
+		{
+			isNew.put(pre, nue);
+		}
+		else {
+			isNew.remove(pre);
+		}
+	}
+		
+	
 
 
 	  
