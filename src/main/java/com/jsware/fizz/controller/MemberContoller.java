@@ -129,7 +129,7 @@ public class MemberContoller {
 	{
 		try
 		{
-			memRepo.deeleteByUsername(username);
+			memRepo.deleteByUsername(username);
 			FizzConstants.log(
 					Logger_State.INFO, 
 					FizzConstants.Receipt_Messages.DELETED_MEMBER.getMessage(),

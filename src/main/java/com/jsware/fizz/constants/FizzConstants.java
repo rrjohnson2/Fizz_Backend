@@ -1,9 +1,11 @@
 package com.jsware.fizz.constants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -30,6 +32,7 @@ import com.jsware.fizz.model.network.Notice;
 import com.jsware.fizz.model.rating.Rating;
 import com.jsware.fizz.model.retort.Message;
 import com.jsware.fizz.model.retort.Retort;
+import com.jsware.fizz.repository.IdeaRepository;
 import com.jsware.fizz.repository.MemberRepository;
 
 @Controller
@@ -41,6 +44,8 @@ public class FizzConstants {
 	
 	private static List<Member> all_members = new ArrayList<>();
 	private static MemberRepository memberRepo;
+	
+	private static IdeaRepository ideaRepo;
 	
 	private static List<Notice> pending_notifications= new ArrayList<>();
 
@@ -186,6 +191,19 @@ public class FizzConstants {
 			categories.add(cat.toString());
 		}
 		return categories;
+	}
+	
+	@RequestMapping(value="/trending",method=RequestMethod.GET)
+	@ResponseBody
+	public List<Idea> trending()
+	{
+			List<Idea> res = ideaRepo.trending(365);
+			
+			if(res.isEmpty()) return res;
+			Collections.sort(res);
+			
+			int size = res.size() >= 3? 2 : res.size()-1 ;
+			return res.subList(0, size);
 	}
 	
 	@RequestMapping(value="/VoteTypes",method=RequestMethod.GET)
@@ -373,9 +391,10 @@ public class FizzConstants {
 	
 	
 	@Autowired
-	public FizzConstants(MemberRepository memberRepository, ObjectMapper mapper)
+	public FizzConstants(MemberRepository memberRepository, ObjectMapper mapper,IdeaRepository iR)
 	{
 		memberRepo = memberRepository;
+		ideaRepo = iR;
 		this.mapper = mapper;
 		 Iterator<Member> it = memberRepo.findAll().iterator();
 		 
@@ -384,6 +403,8 @@ public class FizzConstants {
 		}
 		 
 	}
+	
+	
 	
 
 }

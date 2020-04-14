@@ -16,5 +16,5 @@ public interface MemberRepository extends CrudRepository<Member, Long>
 	public boolean existByUsername(@Param("username") String username);
 	
 	@Query("delete from Member m where m.username = :username ")
-	public void deeleteByUsername(@Param("username") String username);
+	public void deleteByUsername(@Param("username") String username);
 }

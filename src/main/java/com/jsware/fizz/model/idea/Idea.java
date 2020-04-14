@@ -24,7 +24,7 @@ import com.jsware.fizz.model.retort.Retort;
 
 @Entity
 @SequenceGenerator(name="idea_seq", initialValue=1)
-public class Idea {
+public class Idea implements Comparable<Idea>{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="idea_seq")
@@ -187,6 +187,20 @@ public class Idea {
 		
 		
 		
+	}
+	public double score ()
+	{
+		return getBadVotes() + getPoorVotes()*2 + getSo_SoVotes()*3 + getFairVotes()*4 + getGoodVotes()*5; 
+	}
+
+	@Override
+	public int compareTo(Idea o) {
+		
+		double pop = ratings.size() * score();
+		double o_pop = o.getRatings().size() * o.score();
+		
+		int res = pop > o_pop? -1 : 0;
+		return  res;
 	}
 
 	
