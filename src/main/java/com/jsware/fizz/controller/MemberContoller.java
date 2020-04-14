@@ -307,7 +307,7 @@ public class MemberContoller {
 		{
 			Member member = memRepo.findByUsername(ticket.getCustomer());
 			
-			
+			Object res = null;
 			switch (ticket.getUpdate_reason()) {
 			case PICTURE:
 				 picture(ticket,member);
@@ -329,6 +329,7 @@ public class MemberContoller {
 				break;
 			case PREFERENCES:
 				preferences(ticket, member);
+				res = member.getPreferences();
 				break;
 			default:
 				throw new Exception();
@@ -341,7 +342,7 @@ public class MemberContoller {
 					MemberContoller.class);
 			return new Receipt(
 					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
-				null);
+				res);
 		}
 		catch(Exception e)
 		{
