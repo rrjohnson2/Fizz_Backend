@@ -395,7 +395,7 @@ public class MemberContoller {
 		}
 	}
 	
-	private void picture(Ticket ticket,Member member) throws s JsonProcessingException
+	private void picture(Ticket ticket,Member member) throws  JsonProcessingException
 	{
 			String data = mapper.writeValueAsString(ticket.getData()).replace("\"", "");
 			
@@ -459,7 +459,7 @@ public class MemberContoller {
 			memRepo.save(member);
 		
 	}
-	private void preferences( Ticket ticket, Member member) throws JsonProcessingException
+	private void preferences( Ticket ticket, Member member) throws Exception
 	{
 			
 			Preference[] data = mapper.readValue(
