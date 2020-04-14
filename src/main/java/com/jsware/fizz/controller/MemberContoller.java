@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsware.fizz.constants.FizzConstants;
@@ -49,6 +50,8 @@ public class MemberContoller {
 	
 	@Autowired
 	private ObjectMapper mapper;
+	
+
 	
 	
 	
@@ -242,35 +245,8 @@ public class MemberContoller {
 //	}
 //	
 	
-	@RequestMapping(value="/updatePicture",method=RequestMethod.POST)
-	@ResponseBody
-	public Receipt picture(@RequestBody Ticket ticket) throws FizzException
-	{
-		try
-		{
-			Member member = memRepo.findByUsername(ticket.getCustomer());
-			
-			String data = mapper.writeValueAsString(ticket.getData()).replace("\"", "");
-			
-			member.setProfilePicture(data);
-			
-			memRepo.save(member);
-			
-			
-			FizzConstants.log(
-					Logger_State.INFO, 
-					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
-					MemberContoller.class);
-			return new Receipt(
-					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
-				null);
-		}
-		catch(Exception e)
-		{
-			FizzConstants.log(Logger_State.ERROR, e.getMessage(), MemberContoller.class);
-			throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
-		}
-	}
+	
+	
 	
 	@RequestMapping(value="/updateContact",method=RequestMethod.POST)
 	@ResponseBody
@@ -314,20 +290,49 @@ public class MemberContoller {
 		}
 	}
 	
-	@RequestMapping(value="/updatePreference",method=RequestMethod.POST)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value="/update",method=RequestMethod.POST)
 	@ResponseBody
-	public Receipt preferences(@RequestBody Ticket ticket) throws FizzException
+	public Receipt update(@RequestBody Ticket ticket) throws FizzException
 	{
 		try
 		{
 			Member member = memRepo.findByUsername(ticket.getCustomer());
 			
-			Preference[] data = mapper.readValue(
- 					mapper.writeValueAsString(ticket.getData()),
-					Preference[].class);
 			
-		
-			updatePreferences(member,Arrays.asList(data));
+			switch (ticket.getUpdate_reason()) {
+			case PICTURE:
+				 picture(ticket,member);
+				break;
+			case PASSWORD:
+				password(ticket,member);
+				break;
+			case USERNAME:
+				username(ticket,member);
+				break;
+			case FIRSTNAME:
+				firstname(ticket,member);
+				break;
+			case LASTNAME:
+				lastname(ticket,member);
+				break;
+			case EMAIL:
+				email(ticket,member);
+				break;
+			case PREFERENCES:
+				preferences(ticket, member);
+				break;
+			default:
+				throw new Exception();
+			}
 			
 			
 			FizzConstants.log(
@@ -336,7 +341,7 @@ public class MemberContoller {
 					MemberContoller.class);
 			return new Receipt(
 					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
-				member.getPreferences());
+				null);
 		}
 		catch(Exception e)
 		{
@@ -344,7 +349,9 @@ public class MemberContoller {
 			throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
 		}
 	}
-
+	
+	
+	
 	private void updatePreferences(Member member, List<Preference> list) {
 		
 		HashMap<Preference, Boolean> isNew = new HashMap<>();
@@ -384,6 +391,81 @@ public class MemberContoller {
 		else {
 			isNew.remove(pre);
 		}
+	}
+	
+	private void picture(Ticket ticket,Member member) throws FizzException, JsonProcessingException
+	{
+			String data = mapper.writeValueAsString(ticket.getData()).replace("\"", "");
+			
+			member.setProfilePicture(data);
+			
+			memRepo.save(member);
+			
+	}
+	private void password(Ticket ticket,Member member) throws FizzException, JsonProcessingException
+	{
+			
+			String data = mapper.writeValueAsString(ticket.getData()).replace("\"", "");
+			
+			if(!member.AccessGranted(data)) throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
+			
+			member.setPassword(data);
+			
+			memRepo.save(member);
+	}
+	private  void username(Ticket ticket, Member member) throws  JsonProcessingException
+	{
+			
+			String data = mapper.writeValueAsString(ticket.getData()).replace("\"", "");
+			
+			member.setUsername(data);
+			
+			memRepo.save(member);
+		
+	}
+	
+
+	private  void firstname(Ticket ticket, Member member) throws  JsonProcessingException
+	{
+			
+			String data = mapper.writeValueAsString(ticket.getData()).replace("\"", "");
+			
+			member.setFirstName(data);
+			
+			memRepo.save(member);
+		
+	}
+
+	private  void lastname(Ticket ticket, Member member) throws  JsonProcessingException
+	{
+			
+			String data = mapper.writeValueAsString(ticket.getData()).replace("\"", "");
+			
+			member.setLastName(data);
+			
+			memRepo.save(member);
+		
+	}
+
+	private  void email(Ticket ticket, Member member) throws  JsonProcessingException
+	{
+			
+			String data = mapper.writeValueAsString(ticket.getData()).replace("\"", "");
+			
+			member.setEmail(data);
+			
+			memRepo.save(member);
+		
+	}
+	private void preferences( Ticket ticket, Member member) throws Exception
+	{
+			
+			Preference[] data = mapper.readValue(
+ 					mapper.writeValueAsString(ticket.getData()),
+					Preference[].class);
+			
+		
+			updatePreferences(member,Arrays.asList(data));
 	}
 		
 	

@@ -3,11 +3,23 @@ package com.jsware.fizz.model.interactions;
 import com.jsware.fizz.model.member.Member;
 
 public class Ticket {
+	
+	public static enum UpdateReason 
+	{
+		PICTURE,
+		PASSWORD,
+		USERNAME,
+		FIRSTNAME,
+		LASTNAME,
+		EMAIL,
+		PREFERENCES
+	}
 
 	private String customer;
 	
 	private Object data;
 	
+	private  UpdateReason update_reason; 
 	public Ticket() {}
 	
 	
@@ -17,6 +29,7 @@ public class Ticket {
 		this.customer = customer;
 		this.data = data;
 	}
+	
 
 
 
@@ -34,6 +47,18 @@ public class Ticket {
 
 	public void setData(Object data) {
 		this.data = data;
+	}
+
+
+
+	public UpdateReason getUpdate_reason() {
+		return update_reason;
+	}
+
+
+
+	public void setUpdate_reason(UpdateReason update_reason) {
+		this.update_reason = update_reason;
 	}
 	
 }
