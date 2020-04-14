@@ -308,6 +308,7 @@ public class MemberContoller {
 			Member member = memRepo.findByUsername(ticket.getCustomer());
 			
 			Object res = null;
+			
 			switch (ticket.getUpdate_reason()) {
 			case PICTURE:
 				 picture(ticket,member);
@@ -394,7 +395,7 @@ public class MemberContoller {
 		}
 	}
 	
-	private void picture(Ticket ticket,Member member) throws FizzException, JsonProcessingException
+	private void picture(Ticket ticket,Member member) throws s JsonProcessingException
 	{
 			String data = mapper.writeValueAsString(ticket.getData()).replace("\"", "");
 			
@@ -458,7 +459,7 @@ public class MemberContoller {
 			memRepo.save(member);
 		
 	}
-	private void preferences( Ticket ticket, Member member) throws Exception
+	private void preferences( Ticket ticket, Member member) throws JsonProcessingException
 	{
 			
 			Preference[] data = mapper.readValue(
