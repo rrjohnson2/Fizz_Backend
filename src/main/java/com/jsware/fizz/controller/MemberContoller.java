@@ -2,6 +2,7 @@ package com.jsware.fizz.controller;
 
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -195,108 +196,7 @@ public class MemberContoller {
 			throw new FizzException(FizzConstants.Error_Messages.LOGIN_X.getMessage());
 		}
 	}
-	
-//	@RequestMapping(value="/updateProfile",method=RequestMethod.POST)
-//	@ResponseBody
-//	public Receipt updateProfile(@RequestBody Ticket ticket) throws FizzException
-//	{
-//		try
-//		{
-//			Member member = memRepo.findByUsername(ticket.getCustomer());
-//			Profile profile = null;
-//			HashMap<String, Object> data = mapper.readValue(
-// 					mapper.writeValueAsString(ticket.getData()),
-//					HashMap.class);
-//			
-//			String password= (String) data.get("old_password");
-//			
-//			if(!member.AccessGranted(password))
-//			{
-//				throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
-//			}
-//			
-//			this.mapper.disable(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES);
-//			
-//			HashMap update = mapper.readValue(
-// 					mapper.writeValueAsString(data.get("member")),
-//					HashMap.class);
-//			
-//			member.update(update);
-//			
-//			member= memRepo.save(member);
-//			
-//			profile= (Profile) getProfile(member.getUsername()).getData();
-//			
-//			
-//			
-//			FizzConstants.log(
-//					Logger_State.INFO, 
-//					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
-//					MemberContoller.class);
-//			return new Receipt(
-//					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
-//				profile);
-//		}
-//		catch(Exception e)
-//		{
-//			FizzConstants.log(Logger_State.ERROR, e.getMessage(), MemberContoller.class);
-//			throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
-//		}
-//	}
-//	
-	
-	
-	
-	
-	@RequestMapping(value="/updateContact",method=RequestMethod.POST)
-	@ResponseBody
-	public Receipt contact(@RequestBody Ticket ticket) throws FizzException
-	{
-		try
-		{
-			Member member = memRepo.findByUsername(ticket.getCustomer());
-			
-			HashMap<String, Object> data = mapper.readValue(
-				mapper.writeValueAsString(ticket.getData()),
-			HashMap.class);
-	
-			String first = (String) data.get("firstName");
-			
-			String last = (String) data.get("lastName");
-			
-			String email = (String) data.get("email");
-			
-			if(first != null) member.setFirstName(first);
-			if(last != null ) member.setLastName(last);
-			if(last != null)  member.setEmail(email);
-			
-			
-			
-			memRepo.save(member);
-			
-			
-			FizzConstants.log(
-					Logger_State.INFO, 
-					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
-					MemberContoller.class);
-			return new Receipt(
-					FizzConstants.Receipt_Messages.UPDATE_SUCCESSFUL.getMessage(),
-				null);
-		}
-		catch(Exception e)
-		{
-			FizzConstants.log(Logger_State.ERROR, e.getMessage(), MemberContoller.class);
-			throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
-		}
-	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	@RequestMapping(value="/update",method=RequestMethod.POST)
@@ -404,14 +304,20 @@ public class MemberContoller {
 			memRepo.save(member);
 			
 	}
-	private void password(Ticket ticket,Member member) throws FizzException, JsonProcessingException
+	private void password(Ticket ticket,Member member) throws FizzException, IOException
 	{
 			
-			String data = mapper.writeValueAsString(ticket.getData()).replace("\"", "");
+		HashMap<String, Object> data = mapper.readValue(
+				mapper.writeValueAsString(ticket.getData()),
+				HashMap.class); 
+		
+			String old_password = (String) data.get("old_password");
 			
-			if(!member.AccessGranted(data)) throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
+			String password = (String) data.get("password");
 			
-			member.setPassword(data);
+			if(!member.AccessGranted(old_password)) throw new FizzException(FizzConstants.Error_Messages.UPDATE_X.getMessage());
+			
+			member.setPassword(password);
 			
 			memRepo.save(member);
 	}
@@ -472,9 +378,5 @@ public class MemberContoller {
 		
 	
 
-
-	  
-	
-	
 	
 }
