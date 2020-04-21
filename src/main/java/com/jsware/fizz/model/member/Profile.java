@@ -23,6 +23,10 @@ public class Profile {
 	
 	private List<Idea> created_ideas = new ArrayList<Idea>();
 	
+	private List<Idea> ideas_retorted = new ArrayList<Idea>();
+	
+	private List<Idea> ideas_messaged = new ArrayList<Idea>();
+	
 	private List<Retort> created_retorts = new ArrayList<Retort>();
 	
 	private List<Message> created_messages = new ArrayList<Message>();
@@ -40,6 +44,15 @@ public class Profile {
 		this.created_retorts = mem.getCreated_retorts();
 		this.created_messages = mem.getCreated_messages();
 		this.setProfilePicture(mem.getProfilePicture());
+		
+		for(Retort ret: created_retorts)
+		{
+			ideas_retorted.add(ret.getIdea());
+		}
+		for(Message msg: created_messages)
+		{
+			ideas_messaged.add(msg.getRetort().getIdea());
+		}
 	}
 
 	public String getUsername() {
@@ -80,6 +93,22 @@ public class Profile {
 
 	public void setProfilePicture(String profilePicture) {
 		this.profilePicture = profilePicture;
+	}
+
+	public List<Idea> getIdeas_retorted() {
+		return ideas_retorted;
+	}
+
+	public void setIdeas_retorted(List<Idea> ideas_retorted) {
+		this.ideas_retorted = ideas_retorted;
+	}
+
+	public List<Idea> getIdeas_messaged() {
+		return ideas_messaged;
+	}
+
+	public void setIdeas_messaged(List<Idea> idea_messaged) {
+		this.ideas_messaged = idea_messaged;
 	}
 	
 	

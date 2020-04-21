@@ -350,6 +350,7 @@ public class FizzConstants {
 
 	private static List<String> membersWhoFollowFocus(Idea data, String creator) {
 		List<String> usernames = new ArrayList<String>();
+		HashMap<String,Boolean> unqiue= new HashMap<>();
 		
 		for (Focus focus : data.getFocuses()) {
 			
@@ -360,7 +361,11 @@ public class FizzConstants {
 					for (Preference preference : memberRepo.findById(member.getId()).get().getPreferences()) {
 						if(preference.getCategory().equals(focus.getCategory()))
 						{
-							usernames.add(member.getUsername());
+							if(unqiue.get(member.getUsername()) == null) 
+							{
+								usernames.add(member.getUsername());
+								unqiue.put(member.getUsername(), true);
+							}
 						}
 				}
 			} 
