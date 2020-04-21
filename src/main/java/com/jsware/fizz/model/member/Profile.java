@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jsware.fizz.model.idea.Idea;
+import com.jsware.fizz.model.rating.Rating;
 import com.jsware.fizz.model.retort.Message;
 import com.jsware.fizz.model.retort.Retort;
 
@@ -26,10 +27,13 @@ public class Profile {
 	private List<Idea> ideas_retorted = new ArrayList<Idea>();
 	
 	private List<Idea> ideas_messaged = new ArrayList<Idea>();
+	private List<Idea> ideas_rated = new ArrayList<Idea>();
 	
 	private List<Retort> created_retorts = new ArrayList<Retort>();
 	
 	private List<Message> created_messages = new ArrayList<Message>();
+	
+	private List<Rating> created_ratings = new ArrayList<Rating>();
 	
 	public Profile() {}
 
@@ -43,6 +47,7 @@ public class Profile {
 		this.created_ideas = mem.getCreated_ideas();
 		this.created_retorts = mem.getCreated_retorts();
 		this.created_messages = mem.getCreated_messages();
+		this.created_ratings = mem.getRatings();
 		this.setProfilePicture(mem.getProfilePicture());
 		
 		for(Retort ret: created_retorts)
@@ -52,6 +57,10 @@ public class Profile {
 		for(Message msg: created_messages)
 		{
 			ideas_messaged.add(msg.getRetort().getIdea());
+		}
+		for(Rating rate: created_ratings)
+		{
+			ideas_rated.add(rate.getIdea());
 		}
 	}
 
@@ -109,6 +118,22 @@ public class Profile {
 
 	public void setIdeas_messaged(List<Idea> idea_messaged) {
 		this.ideas_messaged = idea_messaged;
+	}
+
+	public List<Rating> getCreated_ratings() {
+		return created_ratings;
+	}
+
+	public void setCreated_ratings(List<Rating> created_ratings) {
+		this.created_ratings = created_ratings;
+	}
+
+	public List<Idea> getIdeas_rated() {
+		return ideas_rated;
+	}
+
+	public void setIdeas_rated(List<Idea> ideas_rated) {
+		this.ideas_rated = ideas_rated;
 	}
 	
 	
