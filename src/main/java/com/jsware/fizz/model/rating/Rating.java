@@ -1,5 +1,7 @@
 package com.jsware.fizz.model.rating;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -32,6 +34,8 @@ public class Rating {
 	@ManyToOne
 	@JsonIgnore
 	private Idea idea;
+	
+	private Date timestamp = new Date();
 	
 	public Rating() {
 		// TODO Auto-generated constructor stub
@@ -89,6 +93,14 @@ public class Rating {
 
 	public void setVote(Vote_Type vote) {
 		this.vote = vote;
+	}
+
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
 	}
 	
 	
