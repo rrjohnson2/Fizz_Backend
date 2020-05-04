@@ -10,6 +10,7 @@ import com.jsware.fizz.model.retort.Retort;
 public class Notice {
 	public String username;
 	public String creator_profilePicture;
+	public String creator_username;
 	public Object data;
 	public int socket_key;
 	public int idea_id;
@@ -27,23 +28,27 @@ public class Notice {
 		{
 			Rating rate  = (Rating) data;
 			creator_profilePicture = rate.getCreator().getProfilePicture();
+			creator_username = rate.getCreator().getUsername();
 			idea_id = (int) rate.getIdea().getId();
 		}
 		else if(data.getClass().equals(Retort.class)) {
 			Retort retort  = (Retort) data;
 			creator_profilePicture = retort.getCreator().getProfilePicture();
+			creator_username = retort.getCreator().getUsername();
 			idea_id = (int) retort.getIdea().getId();
 		}
 		else if(data.getClass().equals(Message.class))
 		{
 			Message msg  = (Message) data;
 			creator_profilePicture = msg.getCreator().getProfilePicture();
+			creator_username = msg.getCreator().getUsername();
 			retort_id = (int) msg.getRetort().getId();
 			idea_id = (int) msg.getRetort().getIdea().getId(); 
 		}
 		else if(data.getClass().equals(Idea.class)) {
 			Idea idea = (Idea) data;
 			creator_profilePicture = idea.getCreator().getProfilePicture();
+			creator_username = idea.getCreator().getUsername();
 		}
 	}
 }
