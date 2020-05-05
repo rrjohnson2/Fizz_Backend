@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsware.fizz.exceptions.FizzException;
 import com.jsware.fizz.model.idea.Focus;
 import com.jsware.fizz.model.idea.Idea;
 import com.jsware.fizz.model.member.Member;
@@ -112,7 +113,7 @@ public class FizzConstants {
 		IDEA_RETURN("IDEAS RETYRNED TO USER"), 
 		DELETED_IDEA("DELETED IDEA SUCCESSFUL"),
 		UPDATE_IDEA("IDEA UPDATED"), 
-		UPDATE_RETORT("RETORT UPDATED"), DELETED_RETORT("DELETED RETORT"), DELETED_MESSAGE("MESSAGE DELETED"), DELETE_RATING("DELETED RATING");
+		UPDATE_RETORT("RETORT UPDATED"), DELETED_RETORT("DELETED RETORT"), DELETED_MESSAGE("MESSAGE DELETED"), DELETE_RATING("DELETED RATING"), NOTICE_REMOVED("REMOVED NOTICE");
 		
 		
 		private String message;
@@ -238,6 +239,16 @@ public class FizzConstants {
 		log(Logger_State.INFO,
 				Receipt_Messages.CLIENT_REMOVED.getMessage(),
 				FizzConstants.class);
+	}
+	@RequestMapping(value="/removeNotice",method=RequestMethod.POST)
+	@ResponseBody
+	public static void removeNotice(@RequestBody Notice notice ) throws FizzException
+	{
+		if(pending_notifications.remove(notice))
+			log(Logger_State.INFO,
+				Receipt_Messages.NOTICE_REMOVED.getMessage(),
+				FizzConstants.class);
+		throw new FizzException("Notice Not Removed");
 	} 
 	
 	public static void notifyParties(Object data, Notification_Network_Actions action,String creator)

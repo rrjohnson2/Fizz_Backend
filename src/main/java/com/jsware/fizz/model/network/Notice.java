@@ -1,13 +1,15 @@
 package com.jsware.fizz.model.network;
 
+import java.util.Random;
+
 import com.jsware.fizz.constants.FizzConstants.Notification_Network_Actions;
 import com.jsware.fizz.model.idea.Idea;
-import com.jsware.fizz.model.member.Member;
 import com.jsware.fizz.model.rating.Rating;
 import com.jsware.fizz.model.retort.Message;
 import com.jsware.fizz.model.retort.Retort;
 
 public class Notice {
+	public int id;
 	public String username;
 	public String creator_profilePicture;
 	public String creator_username;
@@ -23,6 +25,7 @@ public class Notice {
 		this.data = data;
 		this.socket_key = socket_key;
 		this.action = action;
+		id = new Random().nextInt();
 		
 		if(data.getClass().equals(Rating.class))
 		{
@@ -51,4 +54,26 @@ public class Notice {
 			creator_username = idea.getCreator().getUsername();
 		}
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Notice other = (Notice) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+	
+	
 }

@@ -251,7 +251,7 @@ public class TicketController {
 	
 	@RequestMapping(value="/getIdeas", method=RequestMethod.POST)
 	@ResponseBody
-	public Receipt getIdeas(@RequestBody Preference[] preferences) throws JsonParseException, JsonMappingException, JsonProcessingException, IOException, FizzException
+	public Receipt getIdeas(@RequestBody String username) throws JsonParseException, JsonMappingException, JsonProcessingException, IOException, FizzException
 	{
 		
 		try {
@@ -273,7 +273,7 @@ public class TicketController {
 					MemberContoller.class);
 			return new Receipt(
 					FizzConstants.Receipt_Messages.IDEA_RETURN.getMessage(),
-					sortByPreference(ideas,preferences));
+					sortByPreference(ideas, memRepo.findByUsername(username).getPreferences()));
 			
 		} catch (Exception e) {
 			FizzConstants.log(Logger_State.ERROR, e.getMessage(), TicketController.class);
@@ -281,7 +281,7 @@ public class TicketController {
 		}
 	}
 
-	private List<Idea> sortByPreference(List<Idea> ideas, Preference[] preferences) {
+	private List<Idea> sortByPreference(List<Idea> ideas, List<Preference> preferences) {
 		// TODO Auto-generated method stub
 		return ideas;
 	}
