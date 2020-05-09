@@ -47,6 +47,12 @@ public class Idea implements Comparable<Idea>{
 	@OneToMany(mappedBy="idea",cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Rating> ratings = new ArrayList<Rating>();
 	
+	private String content;
+	
+	private String content_type;
+	
+	
+
 	public Idea() {}
 	
 	public Idea(String title, String description) {
@@ -118,6 +124,14 @@ public class Idea implements Comparable<Idea>{
 		this.title = title;
 	}
 
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -136,6 +150,13 @@ public class Idea implements Comparable<Idea>{
 
 	public List<Rating> getRatings() {
 		return ratings;
+	}
+	public String getContent_type() {
+		return content_type;
+	}
+
+	public void setContent_type(String content_type) {
+		this.content_type = content_type;
 	}
 	
 	public int getBadVotes()
