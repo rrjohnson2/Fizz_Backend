@@ -7,7 +7,7 @@ insert into preference (id, category, weight, owner_id) values
 (1002, 'MOVIES', 0, 152);
 
 insert into idea( id, description, timestamp, title, creator) values
-(2001, 'A man has to travel through a wormhole to save his moms dog for an broken avenger', '2019-12-28 14:33:45', 'Movie Idea', 102),
+(2001, 'A man has to travel\n through a wormhole to save his moms dog for an broken avenger', '2019-12-28 14:33:45', 'Movie Idea', 102),
 (2002, 'How to get away with lifer ', '2019-12-28 14:46:21', 'Some Flick',152);
 
 insert into focus (id, category, idea_id) values
