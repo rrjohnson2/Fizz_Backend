@@ -50,7 +50,7 @@ public class FizzConstants {
 	
 	private static List<Notice> pending_notifications= new ArrayList<>();
 
-	private static String realTimeServerURL = "https://app-loop-realtime-server.herokuapp.com/";
+	private static String realTimeServerURL = "http://app-loop-realtime-server.herokuapp.com/";
 			
 	private final static CloseableHttpClient http_client = HttpClients.createDefault();
 	public static final int  suggestCount = 5;
